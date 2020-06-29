@@ -1,0 +1,262 @@
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% PROBABILITY %
+
+\newcommand{\cid}{\overset{\scrD}{\rightarrow}}
+\newcommand{\eqd}{\overset{\scrD}{=}}
+\newcommand{\cip}{\overset{p}{\rightarrow}}
+\newcommand{\cas}{\overset{a.s.}{\rightarrow}}
+\newcommand{\sip}{\overset{p}{\sim}}
+\newcommand{\sas}{\overset{a.s.}{\sim}}
+
+\newcommand{\inds}[1]{ {\mathbbm{1}}_{ \hspace{-0.5pt} {#1} }}
+\newcommand{\indf}[1]{{\mathbb{1}}_{ \hspace{-0.5pt} \{ #1 \} }}
+\newcommand{\var}{ \text{\bf var} }
+\newcommand{\cov}{ \text{\bf cov} }
+
+\newcommand{\Var}{ \text{\bf Var}  }
+\newcommand{\MSE}{ \text{\bf MSE}  }
+\newcommand{\RMSE}{\text{\bf RMSE} }
+\newcommand{\Cov}{ \text{\bf Cov}  }
+\newcommand{\Exp}{ \text{\bf E} }
+\newcommand{\Prb}{ \text{\bf P} }
+\newcommand{\Qrb}{ \text{\bf Q} }
+
+
+%% PAPER VARIABLE MACROS %%
+
+\newcommand{\nv}{N}
+\newcommand{\no}{T}
+\newcommand{\ones}{\rme}
+\newcommand{\pca}{PCA}
+
+% denote a matrix (+ extra greek bold matrix symbols)
+\newcommand{\mat}[1]{\mbf{#1}}
+\newcommand{\bsig}{\bm{\Sigma}}
+\newcommand{\blam}{\bm{\Lambda}}
+\newcommand{\bdel}{\bm{\Delta}}
+\newcommand{\bell}{\bm{L}}
+\newcommand{\Gd}{\bm{\Delta}}
+
+
+% factor model variables
+\newcommand{\fvol}{\ensuremath{\sigma}}
+\newcommand{\fv}{\ensuremath{\sigma^2}} % factor variance
+\newcommand{\svol}{\ensuremath{\delta}}
+\newcommand{\sv}{\ensuremath{\delta^2}} % specific variance
+\newcommand{\fe}{\ensuremath{\beta}}    % factor exposure
+\newcommand{\sfvol}{\mu}                % scaled factor variance
+\newcommand{\sfv}{\sfvol^2}             % scaled factor variance
+\newcommand{\sfve}{\hat{\sfvol}^2}
+\newcommand{\sfvole}{\hat{\sfvol}}
+
+
+% estimated factor variables
+\newcommand{\fee}{\ensuremath{\hat{\beta}}}
+\newcommand{\fve}{\ensuremath{\hat{\sigma}^2}}
+\newcommand{\fvole}{\ensuremath{\hat{\sigma}}}
+\newcommand{\sve}{\ensuremath{\hat{\delta}^2}}
+\newcommand{\svole}{\ensuremath{\hat{\delta}}}
+
+% projections & angles
+\newcommand{\gam}[2]{\gamma_{#1,#2}}
+\newcommand{\ang}[2]{\theta_{#1,#2}}
+
+% errors
+\newcommand{\err}{\scrE}
+
+% porfolios
+\newcommand{\minw}{\wh{w}}
+\newcommand{\optw}{w_*}
+\newcommand{\eqww}{w_e}
+
+% rmt variables
+\newcommand{\rmtchisq}{\xi}
+\newcommand{\rmtdeflate}{\Psi}
+
+
+
+
+% to be obsolete
+\newcommand{\eb}{\ensuremath{\hat{\beta}}}
+%\newcommand{\vs}{\ensuremath{\delta^2}}
+\newcommand{\vf}{\ensuremath{\sigma^2}}
+\newcommand{\evf}{\ensuremath{\hat{\sigma}^2}}
+\newcommand{\vfe}{\ensuremath{\hat{\sigma}^2}}
+\newcommand{\evs}{\ensuremath{\hat{\delta}^2}}
+\newcommand{\vse}{\ensuremath{\hat{\delta}^2}}
+
+
+\newcommand{\bthr}{\beta_{\text{MV}}}
+\newcommand{\ebthr}{\wh{\beta}_{\text{MV}}}
+
+
+\newcommand{\te}{\scrT}
+
+
+
+
+
+\newcommand{\mv}{{\rm MV}}
+\newcommand{\vmf}{\ensuremath{\sigma^2_{m}}}
+\newcommand{\vb}{\ensuremath{\sigma^2_\beta}}
+%\newcommand{\ve}{\ensuremath{\sigma^2_\epsilon}}
+\newcommand{\eve}{\ensuremath{\hat{\sigma}^2_\epsilon}}
+\newcommand{\se}{\ensuremath{\sigma_\epsilon}}
+\newcommand{\ese}{\ensuremath{\hat\sigma_\epsilon}}
+\newcommand{\ves}{\ensuremath{\sigma^4_\epsilon}}
+\newcommand{\vese}{\ensuremath{\hat\sigma^4_\epsilon}}
+\newcommand{\ven}{\ensuremath{\sigma^2_{\epsilon_n}}}
+
+\newcommand{\mvls}{{\rm MV}}
+\newcommand{\mvl}{{\rm MVL}}
+\newcommand{\eq}{{\rm EQW}}
+
+% i added these -- alex s. okay?
+\newcommand{\hmvls}{\widehat{\mvls}}
+\newcommand{\hmvl}{\widehat{\mvl}}
+\newcommand{\hmv}{\widehat{\mv}}
+\newcommand{\heq}{\widehat{\eq}}
+
+
+\newcommand{\vmv}{\ensuremath{\sigma^2_{\mv}}}
+\newcommand{\vmve}{\ensuremath{\sigma^2_{\widehat\mv}}}
+\newcommand{\evmve}{\ensuremath{\hat{\sigma}^2_{\widehat\mv}}}
+\newcommand{\vmvl}{\ensuremath{\sigma^2_{\mvl}}}
+\newcommand{\vmvls}{\ensuremath{\sigma^2_{\mvls}}}
+\newcommand{\vemvls}{\ensuremath{\sigma^2_{\widehat\mvls}}}
+\newcommand{\wemvls}{\ensuremath{w_{\widehat\mvls}}}
+\newcommand{\wmv}{\ensuremath{w_{\mv}}}
+\newcommand{\wmve}{\ensuremath{w_{\widehat\mv}}}
+\newcommand{\pvfr}{\text{$\scrR_{\widehat\mv}$}}
+\newcommand{\vexp}{\ensuremath{\tau_\beta}}
+\newcommand{\rat}{r}
+
+%%lisa's  awful hacks
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\ba}{\ensuremath{\ubar\beta}}
+\newcommand{\na}{\ensuremath{\ubar N}}
+\newcommand{\ta}{\ensuremath{\ubar \theta}}
+
+
+% GREEK %
+
+%\newcommand{\ep}{\epsilon}
+\newcommand{\del}{\delta}
+
+
+
+
+% COLLABORATION MACROS %
+
+\newcommand{\lrgtext}[1]{\oystertext{#1}}
+\newcommand{\adstext}[1]{\bambootext{#1}}
+\newcommand{\agptext}[1]{\downytext{#1}}
+
+
+\newcommand{\lrglmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\oystertext{\emph{#1}--lisa}}}} }
+\newcommand{\lrgrmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\oystertext{\emph{#1}--lisa}}}} }
+
+\newcommand{\adslmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\bambootext{\emph{#1}--alex.s}}}} }
+\newcommand{\adsrmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\bambootext{\emph{#1} --alex.s}}}} }
+
+\newcommand{\agplmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\downytext{\emph{#1}--alex.p}}}}  }
+\newcommand{\agprmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\downytext{\emph{#1}--alex.p}}}}  }
+
+
+
+
+
+
+
+%%%%% Alex Bernstein's commands
+
+\usepackage{amssymb}
+% Greek Letters
+
+\newcommand{\ga}{\alpha}
+\newcommand{\gb}{\beta}
+\newcommand{\gc}{y}
+\newcommand{\gd}{\delta}
+\newcommand{\gf}{\phi}
+\newcommand{\gl}{\lambda}
+\newcommand{\gk}{\kappa}
+\newcommand{\go}{\omega}
+\newcommand{\gt}{\theta}
+\newcommand{\gr}{\rho}
+\newcommand{\gs}{\sigma}
+\newcommand{\gp}{\psi}
+
+\newcommand{\Gf}{\Phi}
+\newcommand{\Go}{\Omega}
+\newcommand{\Gc}{\Gamma}
+\newcommand{\Gth}{\theta}
+%\newcommand{\Gd}{\Delta}
+\newcommand{\Gs}{\Sigma}
+\newcommand{\Gp}{\Psi}
+\newcommand{\Gl}{\Lambda}
+\renewcommand{\gc}{\gamma}
+\newcommand{\mrm}{\mathrm}
+\newcommand{\geps}{\varepsilon}
+%\newcommand{\vt}{\vartheta}
+
+%Matrix
+\newcommand{\T}{\top}
+
+%Distributions
+\newcommand{\ncal}{\mathcal{N}}
+\newcommand{\ucal}{\mathcal{U}}
+%mathbb
+\newcommand{\bbr}{\mathbb{R}}
+\newcommand{\bbc}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+
+
+%boldMath
+
+\newcommand{\bB}{\mat{B}}
+\newcommand{\bV}{\mat{V}}
+\newcommand{\be}{\rme}
+\newcommand{\bA}{\mat{A}}
+\newcommand{\rme}{\mathrm{e}}
+
+%\newcommand{\diag}{\textbf{diag}}
+
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\prp}[2]{\langle #1, #2 \rangle_{\hspace{-1pt}\nv}}
+\newcommand{\prj}[2]{\langle #1, #2 \rangle}
+% Other
+
+\newcommand\coolover[2]{\mathrlap{\smash{\overbrace{\phantom{%
+    \begin{matrix} #2 \end{matrix}}}^{\mbox{$#1$}}}}#2}
+\newcommand\coolunder[2]{\mathrlap{\smash{\underbrace{\phantom{%
+    \begin{matrix} #2 \end{matrix}}}_{\mbox{$#1$}}}}#2}
+\renewcommand{\th}{\textsuperscript{th}}
+\newcommand{\norm}[1]{|#1|}
+\newcommand{\alex}[1]{\textcolor{red}{#1}}
+
+\newcommand{\paren}[1]{\left(#1\right)}
+
+
+
+%Calculus
+\newcommand{\grad}{\nabla} 
+\newcommand{\diff}[1]{\frac{\partial }{ \partial {#1}}}
+
+
+%spacing
+\newcommand{\s}[1][1]{\hspace{#1pt}}
+

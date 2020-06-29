@@ -1,0 +1,128 @@
+
+% PAGE SETTINGS %
+
+\parskip 0in
+\parindent 0.32in
+%\voffset -0.125in
+
+\usepackage[letterpaper]{geometry}
+\geometry{text={5.562306in,9in}, centering} % golden ratio :)
+%\renewcommand{\baselinestretch}{1.02} 
+
+% FONTS %
+
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage[T1]{fontenc}
+  \usepackage[no-math]{fontspec}
+
+  \setmainfont[Scale=1.0]{Times NR MT Std}
+
+  \usepackage[cal=euler, calscaled=1,
+	      scr=boondox, scrscaled=1]{mathalfa}
+
+  \usepackage[mtpcal,mtphrb,mtpfrak,noamssymbols,nofontinfo,
+  	      subscriptcorrection,zswash]{mtpro2}
+
+  %\DeclareMathSizes{12}{13}{9}{7}
+\else
+  \usepackage{lmodern}
+  \usepackage{amsfonts}
+  \usepackage{amssymb}
+  \usepackage{mathrsfs}
+  % to match mt2pro
+  \newcommand{\mbf}{\mathbf} 
+  \newcommand{\what}[1]{\widehat{#1}}
+\fi
+
+% THEOREMS %
+
+\usepackage{amsthm}
+
+\newtheoremstyle{mytheoremstyle}
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\itshape}                   % Body font
+{}                           % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{mytheoremstyle}
+
+\makeatletter
+\@ifclassloaded{report}{
+   \newtheorem{theorem}{Theorem} }
+{  \newtheorem{theorem}{Theorem}[section] }
+\makeatother
+
+\newtheorem{thm}[theorem]{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\newtheorem*{theo}{Theorem}
+\newtheorem*{lemm}{Lemma}
+\newtheorem*{defn}{Definition}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{assm}{Assumption}
+\newtheorem*{cond}{Condition}
+\newtheorem*{remk}{Remark}
+\newtheorem*{expl}{Example}
+
+
+% REFERENCES %
+
+\usepackage{harvard}
+
+% SECTIONS %
+
+\usepackage{titlesec}
+
+\titleformat{\section}[runin]
+{\normalfont\bfseries}
+{\thesection.}{0.08in}{}[.]
+
+\titlespacing{\section}{\parindent}{0.08in}{0.08in}
+
+\titleformat{\subsection}[runin]
+{\normalfont\slshape}
+{\thesubsection.}{0.04in}{}[.]
+
+\titlespacing{\subsection}{\parindent}{0.08in}{0.08in}
+
+
+% ABSTRACT
+
+\renewcommand{\abstractname}{\vspace{-0.48in}}
+
+\renewenvironment{abstract}
+{\small
+\begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+\end{center}
+\list{}{
+	\setlength{\leftmargin}{\parindent}
+    \setlength{\rightmargin}{\leftmargin}
+    \setlength{\parsep}{0in}
+	\itemindent \parindent} 
+  \item\relax}
+{\endlist}
+
+% TABLES AND FIGURES
+
+
+\usepackage{caption}
+\captionsetup[figure]{margin=0.32in,
+	labelsep=period,labelfont=bf,textfont=it}
+\captionsetup[table]{margin=0.32in,
+	labelsep=period,labelfont=bf,textfont=it}
+
+
+

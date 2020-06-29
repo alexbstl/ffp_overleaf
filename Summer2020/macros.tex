@@ -1,0 +1,268 @@
+
+
+
+%\newif\ifhide
+%\hidetrue %\hidefalse
+%\newcommand{\hide}[1]{\ifhide {} \else {#1} \fi} 
+
+
+
+% SPACING/TEXT %
+
+\newcommand{\s}[1][1]{\hspace{#1pt}}
+\newcommand{\mst}{{\scalebox{0.6}[0.6]{\(\hspace{-1pt}{*}\)}}}
+
+\newcommand{\tq}[1]{{\textquotedblleft #1\textquotedblright}}
+\newcommand{\ts}[2]{{#1\textsubscript{#2}}}
+
+
+% PROBABILITY %
+
+\newcommand{\cid}{\overset{\scrD}{\rightarrow}}
+\newcommand{\eqd}{\overset{\scrD}{=}}
+\newcommand{\cip}{\overset{p}{\rightarrow}}
+\newcommand{\cas}{\overset{a.s.}{\rightarrow}}
+\newcommand{\sip}{\overset{p}{\sim}}
+\newcommand{\sas}{\overset{a.s.}{\sim}}
+
+\newcommand{\setst}{\mathbb} % set style
+\newcommand{\oprst}{\textsc} % operator style
+
+\newcommand{\inds}[1]{ \mbf{1}_{ \s[-0.5] {#1} }}
+\newcommand{\indf}[1]{ \mbf{1}_{ \s[-0.5] \{#1\} }}
+
+\newcommand{\var}{\oprst{var}}
+\newcommand{\std}{\oprst{std}}
+\newcommand{\cov}{\oprst{cov}}
+\newcommand{\Var}{\oprst{Var}}
+\newcommand{\Cov}{\oprst{Cov}}
+\newcommand{\Std}{\oprst{SD}}
+\newcommand{\MSE}{\oprst{MSE}}
+\newcommand{\RMSE}{\oprst{RMSE} }
+\newcommand{\Exp}{\oprst{E}\s[.5]}
+\newcommand{\Prb}{\oprst{P}\s[.5]}
+\newcommand{\Qrb}{\ensuremath{\oprst{Q}\s[.5]}}
+
+% SETS / MATH $
+
+\newcommand{\nn}{\bbN}
+\newcommand{\rn}{\bbR}
+\newcommand{\zn}{\bbZ}
+\newcommand{\qn}{\bbQ}
+
+\newcommand{\Img}{\mathrm{Im}}
+\newcommand{\Rea}{\mathrm{Re}}
+\newcommand{\im}{\mathrm{i}}
+
+
+\newcommand{\bst}{ \s[1.5] | \s[1.5] }
+\newcommand{\cst}{ \s[0.5] : \s[0.5] }
+\newcommand{\sst}{ \s[2.0] ; \s[0.5] }
+
+
+\newcommand{\mat}[1]{\mbf{#1}}
+\newcommand{\ones}{\rme}
+\newcommand{\tr}{\textsc{Tr}}   
+
+
+% GREEK %
+
+\newcommand{\eps}{\epsilon}
+
+
+% LETTER STYLES %
+\usepackage{pgffor}
+
+\foreach \x in {A,B,...,Z,a,b,...,z} 
+{
+  \expandafter\xdef\csname cal\x\endcsname{\noexpand 
+	\ensuremath{\noexpand\mathcal{\x}}}
+  \expandafter\xdef\csname scr\x\endcsname{\noexpand 
+	\ensuremath{\noexpand\mathscr{\x}}}
+  \expandafter\xdef\csname bb\x\endcsname{\noexpand 
+	\ensuremath{\noexpand\mathbb{\x}}}
+  \expandafter\xdef\csname rm\x\endcsname{\noexpand 
+	\ensuremath{\noexpand\mathrm{\x}}}
+  \expandafter\xdef\csname bf\x\endcsname{\noexpand 
+	\ensuremath{\noexpand\mbf{\x}}}
+}
+
+% ARROWS %
+
+\newcommand{\upto}{ \uparrow }
+\newcommand{\downto}{ \downarrow }
+\newcommand{\nto}{ \nrightarrow }
+
+
+
+% COLABORATION %
+
+
+\newcommand{\lrgtext}[1]{\oystertext{#1 -- lisa}}
+\newcommand{\adstext}[1]{\bambootext{#1 -- alex}}
+\newcommand{\agptext}[1]{\downytext{#1}}
+
+
+\newcommand{\lrglmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\oystertext{\emph{#1}--lisa}}}} }
+\newcommand{\lrgrmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\oystertext{\emph{#1}--lisa}}}} }
+
+\newcommand{\adslmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\bambootext{\emph{#1}--alex.s}}}} }
+\newcommand{\adsrmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\bambootext{\emph{#1} --alex.s}}}} }
+
+\newcommand{\agplmn}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\downytext{\emph{#1}--alex.p}}}}  }
+\newcommand{\agprmn}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize 
+	\downytext{\emph{#1}--alex.p}}}}  }
+
+
+
+
+
+% LOCAL %
+
+\newcommand{\nv}{p}
+\newcommand{\no}{n}
+\newcommand{\tix}{j}
+\newcommand{\six}{i}
+
+
+
+
+\newcommand{\nb}{b}
+\newcommand{\nh}{h}
+\newcommand{\nz}{z}
+
+\newcommand{\rrv}{Y}
+\newcommand{\frv}{X}
+\newcommand{\srv}{Z}
+
+\newcommand{\ret}{\rmY}
+\newcommand{\fet}{\rmX}
+\newcommand{\set}{\rmZ}
+
+\newcommand{\red}{\mbf{Y}}
+\newcommand{\zed}{\mbf{Z}}
+
+\newcommand{\bsig}{{\bm{\Sigma}}}
+\newcommand{\bdel}{{\bm{\Delta}}}
+
+\newcommand{\sphp}{\bbS^{\no-1}}
+\newcommand{\covb}{{\bm{\Sigma}}}
+\newcommand{\tfvol}{{\sigma}}
+\newcommand{\tfv}{{\sigma^2}} 
+\newcommand{\tsvol}{{\delta}}
+\newcommand{\tsv}{{\delta^2}} 
+
+\newcommand{\tfvolh}{\hat{\sigma}}
+\newcommand{\tsvolh}{\hat{\delta}}
+\newcommand{\tsvh}{{\hat{\delta}^2}} 
+\newcommand{\tfvh}{{\hat{\sigma}^2}} 
+
+\newcommand{\ter}{\scrT}
+\newcommand{\vfr}{\scrR}
+\newcommand{\vol}{\rmV}
+
+
+\newcommand{\scov}{\mat{S}}
+\newcommand{\covh}{\bm{\hat{\Sigma}}}
+\newcommand{\efvol}{\ensuremath{\hat \sigma}}
+\newcommand{\efv}{\ensuremath{\hat{\sigma}^2}} 
+\newcommand{\esvol}{\ensuremath{\hat \delta}}
+\newcommand{\esv}{\ensuremath{\hat{\delta}^2}} 
+\newcommand{\esvi}{\ensuremath{\hat{\delta_i}^2}} 
+
+
+\newcommand{\err}{\scrE}
+\newcommand{\spar}{\tau}
+\newcommand{\vpar}{t}
+\newcommand{\covc}{\bm{\Sigma}_\spar}
+
+%\newcommand{\minw}{w_{\scalebox{0.6}[0.6]{\(\hspace{-1pt}{h}\)}}}
+%\newcommand{\optw}{w_{\scalebox{0.6}[0.6]{\(\hspace{-1pt}{b}\)}}}
+
+\newcommand{\minw}{\hat{w}}
+\newcommand{\optw}{w}
+\newcommand{\eqww}{w_{\rme}}
+
+
+\newcommand{\diag}{\textbf{diag}}    % factor exposure
+
+\newcommand{\prp}[2]{\langle #1, #2 \rangle_{\hspace{-1pt}\nv}}
+\newcommand{\prj}[2]{\langle #1, #2 \rangle}
+\newcommand{\pri}[2]{\langle #1, #2 \rangle_\infty}
+\newcommand{\ang}[2]{\theta_{\prj{#1}{#2}}}
+\newcommand{\anp}[2]{\theta_{\prp{#1}{#2}}}
+\newcommand{\Ang}[2]{\Theta_{\prj{#1}{#2}}}
+\newcommand{\Anp}[2]{\Theta_{\prp{#1}{#2}}}
+
+
+\newcommand{\chb}{\psi}
+\newcommand{\eig}{\rms^2_{\hspace{-1pt} \nv}}
+\newcommand{\blk}{\ell^2_{\hspace{-1pt} \nv}}
+\newcommand{\sig}{\rms_\nv}
+
+\newcommand{\me}{\mu}
+\newcommand{\mei}{\mu_\infty}
+\newcommand{\mep}{\mu_\nv}
+\newcommand{\cv}{\rmd}
+\newcommand{\cvp}{\rmd_\nv}
+\newcommand{\cvi}{\rmd_\infty}
+
+
+
+\newcommand{\llns}{\eta}
+\newcommand{\svec}{\varphi}
+\newcommand{\sy}{\chi_\nv}
+\newcommand{\syk}{\chi_{\nv_k}}
+\newcommand{\sign}{\sigma^2_{\rmX}}
+\newcommand{\sigb}{\tfvol_{\hspace{-1.16pt} \nv}^2}
+\newcommand{\sigh}{\tfvolh_{\hspace{-1.16pt} \nv}^2}
+
+\newcommand{\thr}{\rho}
+\newcommand{\roh}{\kappa}
+
+%%%%% Commands Alex B %%%%%%%%%%
+
+
+\newcommand{\ga}{\alpha}
+\newcommand{\gb}{\beta}
+\newcommand{\gc}{y}
+\newcommand{\gd}{\delta}
+\newcommand{\gf}{\phi}
+\newcommand{\gl}{\lambda}
+\newcommand{\gk}{\kappa}
+\newcommand{\go}{\omega}
+\newcommand{\gt}{\theta}
+\newcommand{\gr}{\rho}
+\newcommand{\gs}{\sigma}
+
+\newcommand{\Gf}{\Phi}
+\newcommand{\Go}{\Omega}
+\newcommand{\Gc}{\Gamma}
+\newcommand{\Gth}{\theta}
+\newcommand{\Gd}{\Delta}
+\newcommand{\Gs}{\Sigma}
+\newcommand{\Gl}{\Lambda}
+\renewcommand{\gc}{\gamma}
+\newcommand{\mrm}{\mathrm}
+\newcommand{\geps}{\varepsilon}
+
+\newcommand{\T}{\top}
+
+\newcommand{\paren}[1]{\left(#1\right)}
+
+\newcommand{\ncal}{\mathcal{N}}
+
+
+%Calculus
+\newcommand{\diff}[1]{\frac{\partial }{ \partial {#1}}}

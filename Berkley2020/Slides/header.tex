@@ -1,0 +1,223 @@
+
+
+% BASIC PACKAGES %
+
+\usepackage{harvard}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{framed}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{stackengine}
+\usepackage{bm}
+
+% MARGIN NOTES %
+
+\usepackage{marginnote}
+\usepackage{setspace}
+
+\newcommand{\mnl}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize \bluetext{\emph{#1}}}}} }
+
+\newcommand{\mnr}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize \bluetext{\emph{#1}}}}} }
+
+\setlength\marginparwidth{64pt}
+
+% ALGORITHMS %
+
+\floatstyle{ruled}
+\newfloat{algorithm}{hpt}{lop}
+\floatname{algorithm}{Algorithm}
+
+
+% TABLE PACKAGES %
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% RAISE/LOWER %
+
+\makeatletter
+\newcommand{\raisemath}[1]{\mathpalette{\raisem@th{#1}}}
+\newcommand{\raisem@th}[3]{\raisebox{#1}{$#2#3$}}
+\makeatother
+
+% HIDE MACRO %
+
+\newif\ifhide
+\hidetrue %\hidefalse
+\newcommand{\hide}[1]{\ifhide {} \else {#1} \fi} 
+
+% EMPHASIZE BOX %
+
+\usepackage{empheq}
+\newcommand{\widefbox}[1]{\fbox{\hspace{0.33in}#1\hspace{0.33in}}}
+
+
+% CHAR MAPS: e.g. \calS for \mathcal{S}  %
+
+\usepackage{pgffor}
+
+\foreach \x in {A,...,Z}{%
+  \expandafter\xdef\csname cal\x\endcsname{\noexpand %
+	\ensuremath{\noexpand\mathcal{\x}}}
+  \expandafter\xdef\csname scr\x\endcsname{\noexpand %
+	\ensuremath{\noexpand\mathscr{\x}}}
+  \expandafter\xdef\csname bb\x\endcsname{\noexpand %
+	\ensuremath{\noexpand\mathbb{\x}}}
+  \expandafter\xdef\csname rm\x\endcsname{\noexpand %
+	\ensuremath{\noexpand\mathrm{\x}}}
+  \expandafter\xdef\csname bf\x\endcsname{\noexpand %
+	\ensuremath{\noexpand\mathbf{\x}}}
+}
+
+
+% ACCENTS %
+
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+
+% BOLD SYMBOLS %
+
+\newcommand{\bsum}{\bm{\sum}}
+
+% SPACING %
+\newcommand{\hs}[1]{ \hspace{#1pt} }
+
+\newcommand{\mptt}{ \hspace{-2pt}  }
+\newcommand{\mpt}{ \hspace{-1pt}  }
+\newcommand{\mhpt}{ \hspace{-0.5pt}  }
+\newcommand{\hpt}{ \hspace{0.5pt}  }
+
+\newcommand{\pt}{ \hspace{1pt}  }
+\newcommand{\ptt}{ \hspace{2pt}  }
+\newcommand{\pttt}{ \hspace{3pt}  }
+\newcommand{\ptttt}{ \hspace{4pt}  }
+
+% BASIC MATH %
+
+
+\newcommand{\bst}{ \hspace{1.5pt} | \hspace{1.5pt} }
+\newcommand{\cst}{ \hspace{0.5pt} : \hspace{0.5pt} }
+\newcommand{\sst}{ \hspace{2pt} ; \hspace{0.5pt} }
+\newcommand{\evl}{ \left| \right. }
+
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ARROWS %
+
+\newcommand{\upto}{ \uparrow }
+\newcommand{\downto}{ \downarrow }
+\newcommand{\nto}{ \nrightarrow }
+
+% TEXT %
+
+\newcommand{\tq}[1]{{\textquotedblleft #1\textquotedblright}}
+\newcommand{\ts}[2]{{#1\textsubscript{#2}}}
+
+
+% Brackets, Parentheses, etc %
+
+\newcommand{\pa}[1]{\hspace{1pt} \left( \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \right) \hspace{1pt}}
+\newcommand{\qa}[1]{\hspace{1pt} \left[ \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \right] \hspace{1pt}}
+\newcommand{\fa}[1]{\hspace{1pt} \left \{ \hspace{0.5pt} % 
+	{#1} \hspace{0.5pt} \right \}\hspace{1pt}}
+\newcommand{\za}[1]{\hspace{1pt} \left\langle \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \right\rangle \hspace{1pt}}
+
+\newcommand{\p}[1]{ \hspace{0.5pt} ( \hspace{0.25pt} %
+	{#1} \hspace{0.25pt} ) \hspace{0.5pt}}
+\newcommand{\q}[1]{ \hspace{0.5pt} [ \hspace{0.25pt} %
+	{#1} \hspace{0.25pt} ] \hspace{0.5pt}}
+\newcommand{\f}[1]{ \hspace{0.5pt} \{ \hspace{0.25pt} %
+	{#1} \hspace{0.25pt} \} \hspace{0.5pt}}
+\newcommand{\z}[1]{ \hspace{0.5pt} \langle \hspace{0.25pt} %
+	{#1} \hspace{0.25pt}\rangle\hspace{0.5pt}}
+
+\newcommand{\pp}[1]{ \hspace{1pt} \big( \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \big) \hspace{1pt}}
+\newcommand{\qq}[1]{ \hspace{1pt} \big[ \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \big] \hspace{1pt}}
+\newcommand{\ff}[1]{ \hspace{1pt} \big\{ \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \big\} \hspace{1pt}}
+\newcommand{\zz}[1]{ \hspace{1pt} \big\langle \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \big\rangle \hspace{1pt}}
+
+\newcommand{\ppp}[1]{ \hspace{1pt} \Big( \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \Big) \hspace{1pt}}
+\newcommand{\qqq}[1]{ \hspace{1pt} \Big[ \hspace{0.5pt} %
+	{#1}  \hspace{0.5pt} \Big] \hspace{1pt}}
+\newcommand{\fff}[1]{ \hspace{1pt} \Big\{ \hspace{0.5pt} %
+	{#1}  \hspace{0.5pt} \Big\} \hspace{1pt}}
+\newcommand{\zzz}[1]{ \hspace{1pt} \Big\langle \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \Big\rangle \hspace{1pt}}
+
+\newcommand{\pppp}[1]{ \hspace{1pt} \bigg(% 
+	\hspace{0.5pt} {#1} \hspace{0.5pt} \bigg) \hspace{1pt}}
+\newcommand{\qqqq}[1]{ \hspace{1pt} \bigg[% 
+	\hspace{0.5pt} {#1} \hspace{0.5pt} \bigg] \hspace{1pt}}
+\newcommand{\ffff}[1]{ \hspace{1pt} \bigg\{% 
+	\hspace{0.5pt} {#1} \hspace{0.5pt} \bigg\} \hspace{1pt}}
+\newcommand{\zzzz}[1]{ \hspace{1pt} \bigg\langle \hspace{0.5pt} %
+	{#1} \hspace{0.5pt} \bigg\rangle \hspace{1pt}}
+
+
+% GREEK %
+
+\newcommand{\ve}{ \varepsilon }
+\newcommand{\ep}{ \epsilon }
+\newcommand{\vs}{ \varsigma }
+\newcommand{\al}{ \alpha }
+
+
+% PROOFS %
+
+\usepackage{amsthm}
+
+\newtheoremstyle{mytheoremstyle}
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\itshape}                   % Body font
+{}                           % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{mytheoremstyle}
+\newtheorem{thm}[theorem]{Theorem}
+
+\newtheorem*{theo}{Theorem}
+\newtheorem*{lemm}{Lemma}
+\newtheorem*{defn}{Definition}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{assm}{Assumption}
+\newtheorem*{cond}{Condition}
+\newtheorem*{remk}{Remark}
+\newtheorem*{corr}{Corollary}
+
+
+% REFERENCES & LABELS %
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, allcolors=bamboo}
+
+
+\newcommand{\ci}[1]{\citeasnoun{#1}}
+\newcommand{\cic}[2]{\citeasnoun[#1]{#2}}
+
+\newcommand{\hci}[2]{ \href{#2}{\ci{#1}} }
+\newcommand{\hcic}[3]{ \href{#3}{\cic{#1}{#2}} }
+\newcommand{\hcite}[2]{ \href{#2}{\cite{#1}} }
+
+\newcommand{\req}[1]{(\ref{#1})}
+
+
+
+

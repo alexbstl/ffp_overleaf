@@ -1,0 +1,659 @@
+\documentclass[12pt,leqno,letterpaper]{article}
+\usepackage{ulem}
+\input{config}
+\input{header}
+\input{format}
+\input{macros}
+\input{colors}
+
+
+
+%\newcommand{\ind}[1]{{1}_{\{#1\}}}
+\begin{document}
+
+%\renewcommand{\labelenumi}{(\arabic{enumi})}
+% Enable bold sum and product symbols
+\ifxetex
+  \let\lsum\sum
+  \renewcommand{\sum}{\bm{\lsum}} 
+
+  \let\lprod\prod
+  \renewcommand{\prod}{\bm{\lprod}}
+\else
+\fi
+
+\author{Alex Bernstein\footnote{Department of Statistics
+\& Applied Probability, UCSB. Email:~{\tt abernstein@ucsb.edu}.} 
+  ~~~ and ~~ Alex Shkolnik\footnote{Department of Statistics
+\& Applied Probability, UCSB. Email:~{\tt shkolnik@ucsb.edu}.}}
+
+
+\title{\vspace{-0.16in}{\bf \Large  Semi-explicit Solutions to 
+Structured \\ Quadratic Programming}}
+
+\date{\today}
+
+%\newcommand{\thr}{\theta}
+%\newcommand{\gfn}{G}
+%\newcommand{\bB}{\mat{B}}
+%\newcommand{\bQ}{\mat{Q}}
+%\newcommand{\bV}{\mat{V}}
+%\newcommand{\diag}{\textbf{diag}}
+
+%\newcommand{\rme}{\mathrm{e}}
+%\newcommand{\indm}{\ensuremath{\mathbf{1}_0}}
+%\newcommand{\ef}{f}
+%\newcommand{\vt}{\vartheta}
+
+%\newcommand{\gd}{\delta}
+%\newcommand{\gs}{\sigma}
+%\newcommand{\gt}{\theta}
+%\newcommand{\gb}{\beta}
+%\newcommand{\ncal}{\mathcal{N}}
+%\newcommand{\Gth}{\theta}
+
+%\newcommand{\alex}[1]{\textcolor{red}{#1}}
+%\newcommand{\ucal}{\mathcal{U}}
+%\newcommand{\tv}{\vartheta}
+%\newcommand{\zv}{z}
+
+
+\maketitle
+
+\vspace{-0.16in}
+
+\begin{abstract} 
+Allowing for some structure on a $p\times p$ matrix $\bQ$, we
+derive semi-explicit solutions to constrained, quadratic
+optimization problems of the form\footnote{Our results
+generalize to additional linear constraints of the form $x^\top
+a \ge b$ as well as a general lower bound constraints $x \ge
+\ell$ for $\ell \in \bbR^p$ may be added but excluded here for
+brevity. }
+%form $x_i \le u_i$ are work in progress.}
+\begin{equation} 
+\begin{aligned}
+ &\hspace{0.5in}\min_{x \in \bbR^p} x^\top \bQ x \\
+  &\text{subject to: } \left\{
+	\begin{array}{r}
+	 \textstyle\sum\nolimits_k \hpt x_k =1 , \\
+	\text{each }  x_k  \ge 0 . 
+	\end{array} 
+\right. \label{con}
+\end{aligned}
+\end{equation}
+
+\hspace*{0.32in} These problems arise in a wide array of
+scientific and engineering applications. The constraint 
+$x_i \ge 0$ is often a crucial ingredient and in its presence, the
+problem admits no (known) explicit solution in general.
+A numerical solver must be used. 
+This is disadvantageous for two  reasons we highlight.
+\begin{enumerate}[label=\textit{(\arabic*)},
+  itemindent=0.32in, itemsep=0.032in] {\it
+  \item For $p$ large,
+the computational efficiency may be unsatisfactory.
+  \item Optimal points are not interpretable in the 
+problem parameters. }
+\end{enumerate}
+\hspace*{0.32in} 
+Analytic expressions address both of these disadvantages. 
+We derive semi-closed-form solutions to $\req{con}$
+under the assumption that $\bQ$ arises from a factor model.
+That is, for a low-rank matrix $\bB \bV \bB^\top = 
+\sum_{k=1}^q \pt \sigma^2_k \beta_k \beta_k^\top$
+(i.e. rank $q \ll p$) where $\beta_k \in \bbR^p$ and
+$\sigma_k \in \bbR$, we assume that
+$\bQ - \bB \bV \bB^\top$ is a diagonal matrix 
+and prove that the minimizer of $\req{con}$
+is a function of $\bdel$ and
+\begin{align}
+ \hspace{0.32in} 
+  \bB \hpt \theta = \theta_1 \beta_1 + \dots + \theta_q \beta_q
+   \pt ;
+ \hspace{0.32in} 
+ \theta \in \bbR^q  \pt .
+\end{align}
+The vector $\theta = (\theta_1, \dots, \theta_q)$ is not known
+explicitly, but may be recovered efficiently by solving a certain
+fixed point problem (in dimension $q$).  The 
+fixed point characterization of
+$\theta$ also yields to interpretation of solutions 
+in terms of each constituent factor $\beta_k$, an important
+feature for many applications.
+
+
+\hspace*{0.32in} Factor structure assumptions of the type 
+above are pervasive in practice and give credence to 
+statistical tools such as PCA. As an example we provide a
+case study on the Markowitz portfolio problem with the no-short
+sales constraint. Our results illustrate the 
+computational advantages (item 1 above).
+We leave questions of portfolio composition 
+(item 2 above) to future work.
+
+\end{abstract}
+
+
+\section{Preliminaries} Consider a symmetric $p \times p$
+matrix $\bQ$ given by 
+\begin{align} \label{struct}
+  \bQ = \bB \bV \bB^\top + \bdel
+\end{align}
+for a $p \times q$ matrix $\bB$ and diagonal matrices $\bV =
+\diag\p{\sigma_1^2, \dots, \sigma_q^2}$ and $\bdel =
+\textbf{diag}\p{\sv_1, \dots, \sv_p}$ with $\sv_i, \sigma_k^2
+\in (0,\infty)$.  We regard $q$ as much smaller than $p$. 
+
+To illustrate how $\bQ$, structured as in $\req{struct}$, arises
+in applications, consider the covariance matrix of a linear
+$q$-factor model over $p$ variables. That is, for a predictor $X =
+(X_1, \dots, X_q)^\top$ we observe a $\bbR^p$-valued response
+$Y$ defined by 
+\begin{align}
+  Y = \bB X + Z
+\end{align} 
+that is subject to errors $Z = (Z_1, \dots, Z_p)$. The
+variables $X$ and $Z$ are random while $\bB$ is a constant
+factor structure generating the correlation in the model.  If
+the $\f{X_k,Z_i}$ are all uncorrelated (a standard assumption),
+$\Var\p{Y}~=~\bQ$ for the right side equal to $\req{struct}$ 
+whenever
+every $\Var\p{X_k} = \sigma_k^2$ and every $\Var\p{Z_i} =
+\delta_i^2$.  
+
+\section{Main Results}
+Our Main Theorem is:
+\begin{theorem}\label{thm1}
+Recall the minimization problem \req{con} .  Without loss of generality, we let $\bfB^\top \bdel^{-1} \rme \ge 0$.
+Define  $\varphi \cst \bbR^q \to \bbR^q$ by
+\begin{align}\label{phi}
+\varphi (\vartheta) = \mat{V} \mat{B}^\top
+\bdel^{-1} (\rme - \mat{B} \vartheta)_+
+\end{align}
+ Let $x$ be a solution of 
+problem \req{con}. Then
+\begin{align}
+   x = \frac{w}{\prj{w}{\rme}}
+  \hspace{0.16in}
+  \text{where} 
+  \hspace{0.16in} 
+   w = \bdel^{-1} (\rme - \mat{B} \theta)_+
+\end{align}
+for $\theta \in \bbR^q$ the unique  fixed
+point of $\varphi$ (i.e., $\varphi(\theta) = \theta$).
+\end{theorem}
+\begin{remark}
+The condition such that $\bfB^\top \bdel^{-1} \rme \ge 0$ is without loss of generality, as we can flip the sign of any vector without altering the structure of the covariance matrix.
+\end{remark}
+\begin{remark}
+$\varphi(\cdot)$ is not a contraction mapping; in fact, fixed-point iterations of $\varphi(\cdot)$ generally do not converge.
+\end{remark}
+Define $\psi \cst \bbR^q \to \bbR^q$ as 
+$\psi (\vartheta) = \bfA^{-1}_\vartheta b_\vartheta$ where
+\begin{equation}\label{linsys}
+\begin{aligned}
+  \bfA_\vartheta &= \bfV^{-1} + \bfB^\top \bdel^{-1}
+  \textbf{diag}(\chi_\vartheta) \bfB \\
+  b_\vartheta &= \bfB^\top \bdel^{-1} \chi_\theta \\
+  \chi_\vartheta &= (\rme \ge \bfB \vartheta)   
+  \in \{0,1\}^p
+\end{aligned}
+\end{equation}
+\begin{lemma}
+We have $\theta = \varphi(\theta)$ if and 
+only if $\theta = \psi(\theta)$.
+\end{lemma}
+\begin{lemma}
+The iterates $\vartheta^{k+1}
+= \psi(\vartheta^k)$ converge to the fixed point 
+of $\psi$ (i.e. $\theta = \psi(\theta)$)
+provided that $\vartheta^0 = 0 \in \bbR^q$.
+\end{lemma}
+\begin{theorem}\label{thm:sol}
+The iterates $\vartheta^{k+1}
+= \psi(\vartheta^k)$ converge to the fixed point 
+of $\psi$ (i.e. $\theta = \psi(\theta)$)
+provided that $\vartheta^0 = 0 \in \bbR^q$.  This is also the fixed point $\varphi(\theta) = \theta$, which solves for the required $\theta$ in Theorem \ref{thm1}.
+\end{theorem}
+A similar expression for the Long/Short portfolio exists and omits the positivity correction, but this leads to a vastly different fixed point.  The portfolios correspond as follows:
+\begin{table}
+\centering
+%\setlength{\tabcolsep}{0.02in}
+\renewcommand{\arraystretch}{1.32}
+  \begin{tabular}{ccc}
+\toprule
+  Quantity & 
+  LS Min. Var. & LO Min. Var. \\
+\midrule
+ weights 
+ & $x = \frac{w}{\prj{w}{\rme}}$
+ & $x = \frac{w}{\prj{w}{\rme}}$ \\
+ $w$ 
+ & $w = \bdel^{-1} (\rme - \bfB \theta)$ 
+ & $w = \bdel^{-1} (\rme - \bfB \theta)_+$ \\
+ $\theta$ 
+ & $\theta = \varphi(\theta)$
+ & $\theta = \varphi(\theta)$ \\
+ $\varphi(\vartheta)$ 
+ & $\bfV \bfB^\top \bdel^{-1} (\rme - \bfB \vartheta)$ 
+ & $\bfV \bfB^\top \bdel^{-1} (\rme - \bfB \vartheta)_+$ \\
+ fixed point
+ & $w = \Psi(w)$
+ & $w = \Psi(w)$ \\
+ $\Psi (v)$ 
+ & $\bdel^{-1} (\rme - \bfB \bfV \bfB^\top v)$
+ & $\bdel^{-1} (\rme - \bfB \bfV \bfB^\top v)_+$
+ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Previous Work and the 1-Factor Case}
+A similar solution has existed for a few years \cite{clarke2011}, but only considers a single factor case.  
+\alex{With a single factor, we can generalize the original problem slightly
+\begin{equation} 
+\begin{aligned}
+ &\hspace{0.5in}\min_{x \in \bbR^p} x^\top \bQ x \\
+  &\text{subject to: } \left\{
+  \begin{array}{r}
+   \textstyle\sum\nolimits_k \hpt a_k x_k =1 , \\
+  \text{each }  x_k  \ge 0 . 
+  \end{array} 
+\right. \label{1factorProb}
+\end{aligned}
+\end{equation}
+where 
+\begin{align*}
+Q = \gb \gb^\T + \Gd
+\end{align*}
+and $\gb \in \bbR^p$ and $\Gd$ is a (strictly) positive-definite diagonal matrix.
+}
+The solution contained a similar formalism for the elements of the factor vector, with the un-normalized weights $w_i$ having the following form:
+\begin{align}
+w_i = \frac{1}{\gd_i^2}\paren{a - \theta \gb_i}_+
+\end{align}
+where $\theta$ is found as the fixed point of:
+\begin{align}
+ \psi_{\textsc{cdt}}(z) = \frac{1/\gs^2 + \sum_{\{i: \gb_i<z\}} \gb_i^2/\gd_i^2 }{ \sum_{\{i: \gb_i<z\}} \gb_i/\gd_i^2 }
+\end{align}
+This result is almost correct; a fixed point may not exist of $sum_i \gb_i<0$, and this is clearly a discontinuous map, so proving existence and uniqueness is still difficult.  Furthermore, for some values of $z$, $\psi_{CDT}$ may be $\pm \infty$.  Our map, $\psi$, is essentially the reciprocal of $\psi_{CDT}$, generalized to multiple dimensions with a slightly different condition on the summation.  Rather than checking if $\gb_i<z$, we check if $z \gb_i<1$.  Note that this alters the condition slightly, such that the signs of $\gb_i$ and $z$ affect which elements are being summed.  Also, our assumption that $\sum_i \frac{\gb_i}{\gd_i^2}>0$ guarantees the existence of a fixed point with our formulation.  Our fixed-point finding map is therefore:
+\begin{align}\label{psi_1}
+\psi(z) = \frac{\sum_{\{i:z\gb_i<1\}} \gb_i/\gd_i^2}{1/\gs^2+ \sum_{ \{i:z\gb_i<1\} } \gb_i^2/\gd_i^2}
+\end{align}
+This is simply the 1-dimensional version of Equation \req{linsys}.  This is still discontinuous, of course, but, as we have previously shown, the fixed points of this function correspond to the fixed points of 
+\begin{align}\label{phi_1}
+\phi(z) = \gs^2\paren{ \sum_{\{i:z\gb_i<1\}} 
+\frac{\gb_i}{\gd_i^2}\paren{1 - z \gb_i}}.
+\end{align}
+This is, of course, also the 1-dimensional version of Equation \req{phi}.  This gives us the followinf set of lemmas and theorems:
+\begin{lemma} 
+The fixed-points of $\phi$ correspond with the fixed-points of $\psi$
+\end{lemma}
+\begin{proof}
+The implication both ways is straightforward algebraic manipulation under the assumption that $\sum_i \frac{\gb_i}{\gd_i^2}>0$.
+\end{proof}
+\begin{lemma} The following are true about $\phi$:
+\begin{enumerate}
+\item $\phi(z)$ is continuous
+\item $\phi(0)>0$
+\item $\phi$ is differentiable a.e. and $\phi'(z)<0$ for all $z>0$
+\item $\phi$ has a positive root
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+These are all fairly straightforward to see in 1-dimension:
+\begin{enumerate}
+\item Continuity follows because the $\phi(\cdot)$ is piecewise-linear, and only changes slope when $z\gb_i = 1$, in which case the term being removed from the summation is identically $0$.
+\item $\phi(0)>0$ follows from our assumption that $\sum_i \frac{\gb_i}{\gd_i^2}>0$; if $z\gb_i<1$ then 
+\begin{align*}
+\frac{\gb_i}{\gd_i^2}< (z\gb_i) \frac{\gb_i}{\gd_i^2}
+\end{align*}
+and at $z=0$, $\phi(z)$ must include all elements of $\gb$ as $0\gb_i <1$ .
+\item Differentiability follows directly from piecewise linearity; the coefficient of $z$ is also negative, meaning that the derivative is piecewise constant and negative where it exists.  Furthermore, the derivative exists all points where $z\gb_i \neq 0$ for some $i$.
+\item We have that $\phi(0)>0$ and $\phi$ has a piecewise constant negative derivative a.e., so $\phi$ must cross $0$ at some point of finite value.
+\end{enumerate}
+\end{proof}
+\begin{theorem}
+$\phi$ has a unique fixed point, and therefore so does $\psi$.
+\end{theorem}
+\begin{proof}
+Applying the previous lemmas, we have that $\phi$ is continuous on a compact set, which guarantees existence of a fixed point via the Brouwer Fixed-Point Theorem.\\
+Uniqueness follows from the fact that $\phi$ is monotonically decreasing on the entire compact set.
+\end{proof}
+%\alex{Add iterates description}
+
+\iffalse
+\begin{theorem}Starting from $0$, the iterates of $\psi(z)$ converge to a fixed point $\psi(z)=z$
+\end{theorem}
+
+
+\alex{We hypothesize $\psi(z)$ increases until the fixed point which corresponds with the maximum.  The function jumps at $\frac{1}{\gb_i}$ we need to understand the behavior at these jumps.  With one-factor, we can assume the $\gb_i$'s are sorted from largest to smallest, so that ($\frac{1}{\gb_1} \leq \frac{1}{\gb_2} \leq \frac{1}{\gb_3} \ldots$).  Our hypothesis also assumes that $\psi(0)>0$ which is without loss of generality.  First task: show that starting from $0$ and increasing in $z$, $\psi(z)$ either increases or hits the fixed-point.  Try to prove that $psi(z)$ does not decrease.\\
+Use the following notation:
+Recall:
+\begin{align}
+\psi(z) &= \frac{\sum_{\{i:z\gb_i<1\}} \gb_i/\gd_i^2}{1/\gs^2+ \sum_{ \{i:z\gb_i<1\} } \gb_i^2/\gd_i^2}
+\end{align}
+Note that for all $z\in [0,\frac{1}{\gb_1})$
+\begin{align}
+\psi(z) &= \frac{A+ \gb_1/\gd_1^2}{B+\gb_1^2/\gd_1^2}\\
+&= \frac{\gd_1^2 A+ \gb_1}{\gd_1^2 B + \gb_1^2}\\
+&=\psi(0)
+\end{align}
+where we define:
+$A = \sum_{i=2}^p \frac{\gb_i}{\gd_i^2}$ and $B = \frac{1}{\gs^2}+\sum_{i=2}^p \frac{\gb_i^2}{\gd_i^2}$.
+At the first jump and before the second jump where $z \in \left[\frac{1}{\gb_1},\frac{1}{\gb_2} \right)$, we have 
+\begin{align}
+\psi\left(\frac{1}{\gb_1}\right)=\frac{A}{B}
+\end{align}
+Either $\psi(z)$ has a fixed point on the interval $\left[0, \frac{1}{\gb_1}\right)$ or there are 2 possible cases : $\psi(z)$ jumps down, or it jumps up
+\subsection*{Case 1}
+Assume the function jumps down:
+\begin{align}
+\psi(0)= \frac{A+ \gb_1/\gd_1^2}{B+\gb_1^2/\gd_1^2} > \frac{A}{B}
+\end{align}
+the implication is that \sout{(\textbf{CHECK THIS})} It's true because $B,\gb_1,A >0$
+\begin{figure}
+\includegraphics[width=\linewidth]{graph.eps}
+\end{figure}
+\begin{align}
+\frac{A}{B}<\frac{1}{\gb_1}
+\end{align}
+and therefore if $\frac{A}{B}< \frac{1}{\gb_1}$, $\psi(z)<z$ for $z \in \left[\frac{1}{\gb_1},\frac{1}{\gb_2}\right)$.  This means we jump below line of slope 1 (fixed point line)
+We need to show 
+\begin{enumerate}
+\item $\psi(z)$ is decreasing for all $z>z_0$ such that $\psi(z_0)<z_0$ (below line $y=x$) OR:
+\item show ``no future jump can exceed or match'' $\psi(z)=z$
+\end{enumerate}
+If either of these is shown, there is no fixed point for $\psi(z)$ which contradicts the earlier lemma/theorem which says that $\varphi(\cdot)$ has a fixed point and the fixed points of $\varphi(\cdot)$ corresponds with the fixed point $\phi(\cdot)$.  This contradiction therefore imples that before the fixed point, the function cannot jump down.\\
+\proofsketch{Assume without loss of generality that $\gb_1, \gb_2>0$- this is allowed because if $z>0$, any negative $\gb_i$ will always be such that $z\gb_i<0$.  Further, assume w.l.o.g. that the fixed point falls in the interval $[0,\gb_1)$, that is, for some $z \in [0, \gb_1):$
+\begin{align}
+\psi(z) &= \frac{\sum_{\{i:z\gb_i<1\}} \gb_i/\gd_i^2}{1/\gs^2+ \sum_{ \{i:z\gb_i<1\} } \gb_i^2/\gd_i^2} = z < \frac{1}{\gb_1}
+\end{align}
+For simplicity, we will adapt the earlier notation under the assumption that $\gb_1>\gb_2>\ldots$ such that at at least some elements of $\gb_i>0$, including $\gb_1$ and $\gb_{2}$, and:
+\begin{align}
+A_i &= \sum_{k=2}^{n} \frac{\gb_{i}}{\gd_{i}^2}\\
+B_i &= \sum_{k=2}^{n} \frac{\gb_{i}^2}{\gd_{i}^2},
+\end{align}
+For example:
+\begin{align*}
+A_1 = \sum_{k=2}^{n} \frac{\gb_{i}}{\gd_{i^2}} = \paren{\sum_{i=1}^n \frac{\gb_{i}}{\gd_{i}^2}} - \frac{\gb_{1}}{\gd_{1}^2}
+\end{align*}
+with a similar pattern for $B_1$.
+In our new notation, we have that
+\begin{align}
+\frac{1}{\gb_1} > \frac{A_1}{B_1} = \frac{\gd_{2}^2 A_2 + \gb_{2}}{\gd_{2}^2 B_2 + \gb_{2}^2}
+\end{align}
+Note that because $\gb_1>0$ and $B_2>0$, we have
+\begin{align}
+ \paren{\gd_2^2 A_2 + \gb_2}\gb_1<\gd_2^2 B_2 + \gb_2^2 
+\end{align}
+rearranging terms, we have:
+\begin{align}
+\gd_2^2 \paren{A_2\gb_1 - B_2}<\gb_2 \paren{\gb_2 - \gb_1}
+\end{align}
+Because $\gb_1>\gb_2 >0$, we have that $\gb_2\paren{\gb_2-\gb_1}<0$, so
+\begin{align}
+A_2 \gb_1 - B_2 &<0\\
+\frac{A_2}{B_2}< \frac{1}{\gb_1}
+\end{align}
+The condition that $\psi(z)$ is nondecreasing implies that 
+\begin{align}
+\frac{A_2}{B_2}-\frac{A_1}{B_1}  < 0
+\end{align}
+}
+Assume not, that is, that
+\begin{align}
+A_2 (\gd_2^2 B_2 + \gb_2^2 )= A_2 B_1 > A_1 B_2 =(\gd_2^2 A_2 + \gb_2) B_2
+\end{align}
+which implies
+\begin{align}
+A_2 \gb_2^2 &> B_2 \gb_2\\
+\implies A_2 \gb_2 - B_2 &> 0
+\end{align}
+However, $\gb_2 < \gb_1 \; \implies A_2 \gb_2 < A_2 \gb_1$. This contradicts that $A_2 \gb_1 -B_2 <0$.  It therefore follows that 
+\begin{align}
+\frac{A_2}{B_2} - \frac{A_1}{B_1} \leq 0
+\end{align}
+\subsection*{Case 2}
+Assume the function jumps up:
+\begin{align}
+\psi(0)= \frac{A+ \gb_1/\gd_1^2}{B+\gb_1^2/\gd_1^2} < \frac{A}{B}
+\end{align}
+the implication is that (\textbf{CHECK THIS})
+\begin{align}
+\frac{1}{\gb_1}< \frac{A}{B}
+\end{align}
+either the next interval is higher or we hit the fixed point on this interval because an inductive extension of the Case 1 argument states that we cannot decrease if we have not hit the fixed point.
+}
+\newpage
+\fi
+
+
+Define:
+\begin{align}
+\psi(z) = \frac{\sum_{z \gb_i <1} \gb_i \gd_i^2}{1/\gs^2 + \sum_{z \gb_i<1} \paren{\gb_i/\gd_i}^2}
+\end{align}
+\begin{assumption}
+We assume $\psi(0)=0$ and $\gb_1 > \gb_2 > \ldots > \gb_p$.
+\end{assumption}
+\begin{remark}
+These assumptions are without loss of generality.
+\end{remark}
+\begin{remark}
+We prove the following theorem for the interval $\left[0,\frac{1}{\gb_1}\right)$.  It generalizes inductively to positive intervals in $\bbR_+$.
+\end{remark}
+\begin{theorem}
+Beginning from $z_0=0$, the fixed point iterations of $z_{k+1}=\psi(z_k)$ converge to a fixed point, where $\psi(z_k)$ is defined above.
+\end{theorem}
+
+\begin{proof}
+First, we must define some notation.  Consider the following:
+\begin{align*}
+A_k &= \sum_{i={k+1}}^p \frac{\gb_i}{\gd_i^2}\\
+B_k &= \frac{1}{\gs^2}+\sum_{i={k+1}}^p \frac{\gb_i^2}{\gd_i^2}
+\end{align*}
+Note that because $\gb_1>\gb_2>\ldots>\gb_p$, $\frac{1}{\gb_1}<\frac{1}{\gb_2}<\ldots$ for all of the values $\gb_i>0$.
+Clearly, we have that $\psi(0)=\frac{A_0}{B_0}$.  Further, as long as $z<\frac{1}{\gb_1}$, we have $z \gb_1<1$, and so $\psi(z)$ is constant on the interval $[0,\frac{1}{\gb_1})$ (it will turn out, this is without loss of generality; $\psi(z)$ is constant between any interval $[\frac{1}{\gb_i},\frac{1}{\gb_{i+1}})$).  We will show that as $z$ increases from $0$, for $z \in [0,\frac{1}{\gb_1})$, the function $\psi(z)$ has two possibilities:
+\begin{itemize}
+\item $\psi(z)=z$ for some $z \in \left[0,\frac{1}{\gb_1}\right)$
+\item If $\psi(z)\neq z$ for all $z \in \left[0,\frac{1}{\gb_1}\right)$, $\psi(z)$ jumps upwards for the interval $\left[\frac{1}{\gb_1},\frac{1}{\gb_2}\right)$; that is: the left limit $\psi\left(\frac{1}{\gb_1}^-\right)< \psi \left(\frac{1}{\gb_1}\right)$
+\end{itemize}
+Naively, it seems possible that $\psi\left(\frac{1}{\gb_1}^-\right)> \psi\left(\frac{1}{\gb_1}\right)$- that is, the function \textit{decreases} at $\frac{1}{\gb_1}$.  We will show this is not possible.\\
+If it were possible (and $\psi(z)\neq z$ for $0<z<\frac{1}{\gb_1}$), we would have:
+\begin{align}
+\psi\paren{\frac{1}{\gb_1}^-} = \frac{A_0}{B_0}> \frac{A_1}{B_1} = \psi\paren{\frac{1}{\gb_1}}.
+\end{align}
+Assume, this were true, that is assume
+\begin{align}
+\frac{A_0}{B_0} > \frac{A_1}{B_1}
+\end{align}
+There are two cases:
+\begin{enumerate}
+\item $\frac{A_1}{B_1}>\frac{1}{\gb_1}$
+\item $\frac{A_1}{B_1}< \frac{1}{\gb_1}$
+\end{enumerate}
+In Case 1, we have:
+\begin{align}
+\frac{A_0}{B_0}>\frac{A_1}{B_1}> \frac{1}{\gb_1}
+\end{align}
+where we note that:
+\begin{align}
+\frac{A_0}{B_0} &= \frac{\frac{\gb_1}{\gd_1^2}+\sum_{k=2}^p \frac{\gb_i}{\gd_i^2}}{\frac{1}{\gs^2}+ \frac{\gb_1^2}{\gd_1^2}+ \sum_{k=2}^p \frac{\gb_i^2}{\gd_i^2}} = \frac{\gd_1^2 A_1 + \gb_1^2}{\gd_1^2 B_1 + \gb_1^2}\\
+&= \frac{A_1 + \frac{\gb_1}{\gd_1^2}}{B_1 + \frac{\gb_1^2}{\gd_1^2}}
+\end{align}
+It therefore follows that:
+\begin{align}
+\frac{A_0}{B_0} &= \frac{A_1 + \frac{\gb_1}{\gd_1^2}}{B_1 + \frac{\gb_1^2}{\gd_1^2}}> \frac{A_1}{B_1}\\
+\implies \frac{\gb_1}{\gd_1^2}B_1 &> \frac{\gb_1^2}{\gd_1^2} A_1
+\end{align}
+It therefore follows that 
+\begin{align}
+\frac{A_1}{B_1}< \frac{1}{\gb_1}
+\end{align}
+which contradicts our assumption that $\frac{A_1}{B_1}> \frac{1}{\gb_1}$.  We must now check Case 2.
+In Case 2, we have:
+\begin{align}
+\frac{A_1}{B_1} < \frac{1}{\gb_1}
+\end{align}
+By similar computations to those with $A_0$ and $B_0$, we have:
+\begin{align}
+\frac{A_1}{B_1} = \frac{\gd_2^2 A_2 + \gb_2}{\gd_2^2 B_2 + \gb_2^2} < \frac{1}{\gb_1}
+\end{align}
+\begin{assumption}
+we proceed under the assumption that $\gb_1>\gb_2>0$ and $A_1, A_2>0$.  
+\end{assumption}
+If $\gb_2\leq 0$, our ordering assumption means that $\gb_3, \ldots <0$, and so $A_2<0$ and so $\frac{A_1}{B_1}<0$.  We therefore have that $\psi(z)<0$ for all $z>\frac{1}{\gb_1}$, and so we never have a fixed point.  Therefore, under the assumption that $\gb_2>0$, our previous assertion implies that
+\begin{align}
+\gb_1 \paren{\gd_2^2 A_2 + \gb_2} < \gd_2^2 B_2 + \gb_2^2
+\end{align}
+Rearranging terms, we have
+\begin{align}
+\gd_2^2 \paren{A_2 \gb_1 - B_2}<\gb_2\paren{\gb_2-\gb_1}
+\end{align}
+However, $\gb_2<\gb_1$, so this implies that
+\begin{align}
+A_2 \gb_1- B_2 &<0\\
+\implies \frac{A_2}{B_2}< \frac{1}{\gb_1}
+\end{align}
+Now, assume that
+\begin{align}
+\frac{A_2}{B_2}> \frac{A_1}{B_1}
+\end{align}
+we are only assuming this, positivity of $\gb_1, \gb_2$, and that $\frac{A_1}{B_1}< \frac{1}{\gb_1}$ (although it follows from our previous result that $\frac{A_1}{B_1}< \frac{1}{\gb_1}$).  We have
+\begin{align}
+\frac{A_2}{B_2}>\frac{\gd_2^2 A_2 + \gb_2}{\gd_2^2 B_2 + \gb_2^2}
+\end{align}
+and it follows that
+\begin{align}
+A_2 \paren{\gd_2^2 B_2 + \gb_2^2} &> B_2\paren{\gd_2^2 A_2 + \gb_2} \\
+\implies A_2 \gb_2^2  &> B_2  \gb_2
+\end{align}
+and so it follows that $\paren{A_2 \gb_2 - B_2}>0$.  However, from our earlier assumption, that $\gb_1>\gb_2$, note that $A_2 \gb_1 > A_2 \gb_2$.  Therefore, this contradicts that $A_2 \gb_1-B_2<0$.  Therefore Case 2 cannot happen either.\\
+It therefore follows that $\psi(z)$ either has a fixed point in $[0,\frac{1}{\gb_1})$ or increases when $z> \frac{1}{\gb_1}$.
+\end{proof}
+\newpage
+\section{Sensitivity Analysis of Unnormalized Weights at Fixed Point}
+We wish to study the sensitivity of both the normalized weights $x_i$ and the un-normalized weights $w_i$ to the parameters $\gs^2,\gb_j$ and $\gd_i^2$ at the fixed point, i.e. where 
+\begin{align}
+\theta = \psi(\theta)= \gf(\theta).
+\end{align}
+Note that $\psi(\cdot)$, $\gf(\cdot)$ are defined above.  Note that at the fixed point, 
+\begin{align}
+\theta=\gf(\theta)
+\end{align}
+and 
+\begin{align}
+\diff{\alpha} \theta = \diff{\alpha} \phi(\theta)
+\end{align}
+where $\alpha \in \{\gs^2, \gb_j, \gd_i^2 \}$.  We will take advantage of this fact for each of our computations.\par
+To be more precise, define:
+\begin{align}
+\theta &= \theta(\ga)\\
+\diff{\ga} \theta(\ga) &= \lim_{h \to 0} \frac{\theta(\ga+h)-\theta(\ga)}{h}
+\end{align}
+First we consider the derivative of $x_i$ and $w_i$ with respect to $\gs^2$.
+\newpage
+\section{Algorithm}  Algorithm \ref{alg} computes the
+solution in Theorem \ref{thm:sol}.
+It implements the fixed point iterations
+$\theta^{n+1} = \psi\p{\theta^n}$ to compute 
+$\psi (\gt) = \gt$.
+
+\newcommand{\told}{\theta_{\text{old}}}
+\newcommand{\tnew}{\theta_{\text{new}}}
+
+\begin{algorithm}[hpt!]
+\vspace{0.16in}
+\begin{enumerate}[label=\textbf{\arabic*.},
+  itemindent=0.32in, itemsep=0.032in]
+\item Initialize $\told \leftarrow (0, \dots, 0) \in \bbR^q$ 
+and tolerance $\epsilon > 0$.
+\item Assemble $\mat{A}_{\told}$ and $b_{\told}$ 
+from 
+$(\bB, \bV, \bdel)$ and $\told$ as in $\req{linsys}$. \label{loop}
+\item Compute $\tnew$ by solving 
+$\mat{A}_{\told} \tnew = b_{\told}$. 
+\item If $| \tnew - \told | >\epsilon$, 
+update $\told \leftarrow \tnew$ and go to Step \ref{loop}.
+\item Compute $w=\bdel^{-1}(\rme-\mat{B} \tnew)_+$
+and {\bf return} $\frac{w}{\rme^\top w}$.
+\end{enumerate}
+\caption{(FFP). Given $(\mat{B}$, $\mat{V}$, $\bdel)$, computes
+the optimizer of problem \req{con}. }
+\label{alg}
+\end{algorithm}
+We refer to Algorithm \ref{alg} as the \emph{factor fixed point}
+(FFP) method. The considerable gain in efficiency of the FFP
+algorithm over traditional quadratic programming solvers is due
+to the fact that it requires only solutions to a $q \times q$
+linear system. Traditional solvers require computations on
+the full problem size $p \times p$. 
+
+
+ Under our assumptions on $\bQ$, the FFP algorithm
+has a running time of $O(pq + q^2)$. The time consuming
+operations (those of order $pq$) involve assembling the linear
+system in $\req{linsys}$. This complexity
+may potentially be reduced by solving $\req{linsys}$
+explicitly via Woodbury type identities and precomputing some of
+the variables. We do not pursue this here. We also leave open
+the question of convergence of the FFP iterations. We treat them
+as constant (relative to $p$).
+
+
+
+\newpage
+\appendix
+
+
+\section{Python Pseudocode} \hspace{1mm} \\
+\verb|Python| implementation of the function $\psi$.
+\begin{verbatim}
+def psi(theta):
+
+    chi = Dinv * (ones >= B @ theta)
+    b = B.T @ chi
+    A = Vinv + (B.T @ np.diag(chi)) @ B
+    
+    return solve(A,b)
+
+
+\end{verbatim}
+
+\verb|Python| implementation of the fixed point iterations.
+
+\begin{verbatim}
+def compute_fixed_point (t):
+
+    s = t + 2 * tol
+
+    while (norm(s - t) > tol * norm(s)):
+        t = s
+        s = psi(t)
+
+    return(s)
+\end{verbatim}
+
+\verb|Python| computation of the long-only portfolio weights.
+
+\begin{verbatim}
+def lo_weights ():
+
+    theta = psi (np.zeros(q))
+    w = Dinv @ maximum(ones - B @ theta, 0) 
+    
+    return w / sum(w)
+
+\end{verbatim}
+
+\bibliographystyle{agsm}
+\bibliography{biblio}
+
+\end{document}
+
+
+
+
+
+

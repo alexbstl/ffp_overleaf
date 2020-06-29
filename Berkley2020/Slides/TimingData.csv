@@ -1,0 +1,5 @@
+﻿Portfolio Size,Explicit Time Average,Numeric Time Average,Max Difference in Solution Value
+256,0.00034,0.01794,1.56E-09
+512,0.00044,0.10306,1.65E-09
+1024,0.00164,1.12856,1.34E-09
+2048,0.00093,2.75790,5.47E-09

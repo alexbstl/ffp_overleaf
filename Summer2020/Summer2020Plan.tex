@@ -1,0 +1,169 @@
+\documentclass[11pt,leqno]{beamer}
+\usepackage{makecell}
+\usepackage{ifxetex}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\ifxetex
+
+  \usepackage[T1]{fontenc}
+  \usepackage[no-math]{fontspec}
+
+  \usefonttheme{serif}
+  \setmainfont{Times NR MT Std}
+
+  \usepackage[cal=euler, calscaled=1.0,
+	      scr=boondox, scrscaled=1.0]{mathalfa}
+
+  \let\hbar\relax
+  \usepackage[noamssymbols,mtpcal,mtphrb,mtpfrak,
+  	      subscriptcorrection,zswash]{mtpro2}
+\else
+  %\usepackage{lmodern}
+  %\usepackage{mathrsfs}
+  \usefonttheme{professionalfonts}
+  \usepackage{stix}
+  \newcommand{\mbf}{\mathbf} % to match mt2pro
+\fi
+
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+
+%\usepackage{booktabs}
+%\usepackage[scale=2]{ccicons}
+
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{dateplot}
+
+%\usepackage{xspace}
+%\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+%\setbeamertemplate{bibliography item}{}
+
+\include{header}
+\include{macros}
+\include{colors}
+\setbeamercolor{frametitle}{bg=blueberry}
+\setbeamercolor{progress bar}{fg=bamboo, bg=oyster}
+\setbeamercolor{alerted text}{fg=bamboo}
+
+
+
+\title{Plan for Summer 2020}
+\date{\today} 
+\author{\texorpdfstring{Alex Bernstein\\}
+\texorpdfstring{\url{abernstein@ucsb.edu}\\}
+{\it (joint work with Alex Shkolnik)}} 
+\institute{
+{\it Department of Statistics \& Applied Probability\\ }
+University of California, Santa Barbara
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+} 
+
+\begin{document}
+
+
+\ifxetex
+  \let\lsum\sum
+  \renewcommand{\sum}{\bm{\lsum}}
+
+  \let\lprod\prod
+  \renewcommand{\prod}{\bm{\lprod}}
+\else
+\fi
+
+
+
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\newcommand{\af}{Y}
+\newcommand{\df}{X}
+
+\begin{frame}{Part I: FFP and Extensions}
+\begin{enumerate}[a)]
+\item Elucidate Applications for FFP in the Current Context:
+\begin{itemize}
+\item Sensitivity Analysis (These derivatives are written in terms of the one-factor case, but should generalize):
+
+\begin{itemize}
+\item Weights vs. Asset Loadings: $\diff{\gb_j} w_i$ in both cases where $i \neq j$ and $i=j$
+\item Weights vs. Factor Variance: $\diff{\gs^2} w_i$ 
+\item Weights vs. Specific Variance: $\diff{\gd_i^2} w_i$ (0 if $i \neq j$)
+\item Fixed Point vs. Asset Loadings: $\diff{\gb_i}\theta= \diff{\gb_i}{\psi(\theta)}$ at FP
+\item Fixed Point vs. Factor Variance: $\diff{\gs^2}\theta= \diff{\gs^2}{\psi(\theta)}$ at FP
+\item Fixed Point vs. Specific Variance: $\diff{\gd_i^2}\theta= \diff{\gd_i^2}{\psi(\theta)}$ at FP
+\end{itemize}
+\item Applications to other restricted QP problems
+\end{itemize}
+\item Complete proof for convergence of FFP algorithm for $q>1$ factors
+\item See if any progress can be made on linear objective case and/or generalizing of constraints
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Lead}
+Typically, no explicit formula exists for a minimum-variance portfolio, which are computed via the well-developed theory of numerical convex optimization. Under a factor-covariance model, we develop a semi-explicit formula and methodology for Minimum-Variance (Markowitz) Portfolios.
+\end{frame}
+
+\begin{frame}{Objective(Funnel)-Challenge-Action-Resolution}
+\begin{itemize}
+\item Opening
+\begin{itemize}
+\item Minimum Variance portfolios and convex optimization is well developed and studied
+\item Well-understood computational theory and algorithms; less well-understood is when explicit formulae are available and sensitivity analysis can be conducted in a (relatively) computationally efficient manner
+\end{itemize}
+\item Funnel
+\begin{itemize}
+\item We are working in the context of minimum variance portfolios; this generalizes to other element wise-constrained quadratic programs without a linear constraint/term
+\end{itemize}
+\item Challenge
+\begin{itemize}
+\item We aim to show that a semi-explicit formula for minimum-variance portfolios exist for a single factor, (and can generalize to any arbitrary number of factors), and can be computed very quickly
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{OCAR Part II}
+\begin{itemize}
+\item Action
+\begin{itemize}
+\item We derive a fixed-point equation, the solution of which can be used to construct the minimum-variance portfolio.  
+\item We show that a fixed-point iteration algorithm can be used to compute the necessary fixed point, with guaranteed convergence
+\end{itemize}
+\item Resolution-\\
+We are able to expand our understanding of elementwise-constrained (e.g. long-only) minimum-variance portfolios, as our formula allows us to compute partial derivatives and conduct a sensitivity analysis.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Part II: Random Matrix Theory Extensions}
+\begin{enumerate}
+\item Write a good background on classical RMT results
+\begin{itemize}
+\item What is ``convergence'' in the RMT sense?
+\item Different regimes for convergence- CLT; Marcenko-Pastur
+\item What does the matrix eigenstructure tell us?
+\end{itemize}
+\item Applications of spiked covariance results to eigenstructure of factor models 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{To Do's and Dates:}
+Part I:
+\begin{itemize}
+\item Clean up FFP proof- Due 6/27
+\item Compute listed Partial Derivatives- Due 6/27
+\item Work out two-factor example for generalization of proof- Due 6/29
+\end{itemize}
+Part II:
+\begin{itemize}
+\item RMT Background: Classical Results- Due 7/1
+\item Spiked Covariance Results- Due 7/6
+\item Simulations- Due 7/10
+\end{itemize}
+\end{frame}
+
+
+\end{document}
+

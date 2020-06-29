@@ -1,0 +1,14 @@
+\frametitle{Algorithms (portfolio computation)}
+
+\verb|Python| computation of the long-only portfolio weights.
+
+\begin{verbatim}
+def lo_weights ():
+
+    theta = psi (np.zeros(q))
+    w = Dinv @ (ones - B @ theta)
+
+    return w / sum(w)
+
+\end{verbatim}
+

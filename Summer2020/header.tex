@@ -1,0 +1,112 @@
+
+
+% BASIC PACKAGES %
+
+\usepackage{harvard}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage{framed}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{stackengine}
+\usepackage{bm}
+
+% MARGIN NOTES %
+
+\usepackage{marginnote}
+\usepackage{setspace}
+
+\newcommand{\mnl}[1]{{\reversemarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize \bluetext{\emph{#1}}}}} }
+
+\newcommand{\mnr}[1]{{\normalmarginpar \setstretch{0.64} %
+	\marginnote{{\scriptsize \bluetext{\emph{#1}}}}} }
+
+\setlength\marginparwidth{64pt}
+
+% ALGORITHMS %
+
+\floatstyle{ruled}
+\newfloat{algorithm}{hpt}{lop}
+\floatname{algorithm}{Algorithm}
+
+
+% TABLE PACKAGES %
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% RAISE/LOWER %
+
+\makeatletter
+\newcommand{\raisemath}[1]{\mathpalette{\raisem@th{#1}}}
+\newcommand{\raisem@th}[3]{\raisebox{#1}{$#2#3$}}
+\makeatother
+
+% HIDE MACRO %
+
+\newif\ifhide
+\hidetrue %\hidefalse
+\newcommand{\hide}[1]{\ifhide {} \else {#1} \fi} 
+
+% EMPHASIZE BOX %
+
+\usepackage{empheq}
+\newcommand{\widefbox}[1]{\fbox{\hspace{0.33in}#1\hspace{0.33in}}}
+
+
+
+% ACCENTS %
+
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+
+
+
+% PROOFS %
+
+\usepackage{amsthm}
+
+\newtheoremstyle{mytheoremstyle}
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\itshape}                   % Body font
+{}                           % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{mytheoremstyle}
+\newtheorem{thm}[theorem]{Theorem}
+
+\newtheorem*{theo}{Theorem}
+\newtheorem*{lemm}{Lemma}
+\newtheorem*{defn}{Definition}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{assm}{Assumption}
+\newtheorem*{cond}{Condition}
+\newtheorem*{remk}{Remark}
+\newtheorem*{corr}{Corollary}
+
+
+% REFERENCES & LABELS %
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, allcolors=bamboo}
+
+
+\newcommand{\ci}[1]{\citeasnoun{#1}}
+\newcommand{\cic}[2]{\citeasnoun[#1]{#2}}
+
+\newcommand{\hci}[2]{ \href{#2}{\ci{#1}} }
+\newcommand{\hcic}[3]{ \href{#3}{\cic{#1}{#2}} }
+\newcommand{\hcite}[2]{ \href{#2}{\cite{#1}} }
+
+\newcommand{\req}[1]{(\ref{#1})}
+
+
+
+

@@ -1,0 +1,291 @@
+\documentclass[12pt,leqno,letterpaper]{article}
+
+\input{config}
+\input{header}
+\input{format}
+\input{macros}
+\input{colors}
+
+
+
+%\newcommand{\ind}[1]{{1}_{\{#1\}}}
+\begin{document}
+
+%\renewcommand{\labelenumi}{(\arabic{enumi})}
+% Enable bold sum and product symbols
+\ifxetex
+  \let\lsum\sum
+  \renewcommand{\sum}{\bm{\lsum}} 
+
+  \let\lprod\prod
+  \renewcommand{\prod}{\bm{\lprod}}
+\else
+\fi
+
+
+\title{\vspace{-0.16in}{\bf \Large  
+Efficient Portfolio}}
+
+\date{\vspace{-0.32in}\today}
+
+\newcommand{\thr}{\theta}
+\newcommand{\gfn}{G}
+\newcommand{\bB}{\mat{B}}
+\newcommand{\bQ}{\mat{Q}}
+\newcommand{\bV}{\mat{V}}
+\newcommand{\diag}{\textbf{diag}}
+\newcommand{\be}{\mat{e}}
+
+
+\newcommand{\rme}{\mathrm{e}}
+\newcommand{\rma}{\mathrm{a}}
+\newcommand{\indm}{\ensuremath{\mathbf{1}_0}}
+\newcommand{\ef}{f}
+\newcommand{\vt}{\vartheta}
+\newcommand{\lscr}{\mathscr{L}}
+
+%\newcommand{\gd}{\delta}
+%\newcommand{\gs}{\sigma}
+%\newcommand{\gt}{\theta}
+%\newcommand{\gb}{\beta}
+%\newcommand{\ncal}{\mathcal{N}}
+%\newcommand{\Gth}{\theta}
+
+%\newcommand{\alex}[1]{\textcolor{red}{#1}}
+%\newcommand{\ucal}{\mathcal{U}}
+\newcommand{\tv}{\vartheta}
+\newcommand{\zv}{z}
+\newcommand{\Bm}{\mat{B}}
+\newcommand{\Vm}{\mat{V}}
+
+\maketitle
+
+\vspace{-0.16in}
+\begin{theorem}
+Let $p >>q$.
+Fix $\bQ = \Bm \Vm \Bm^\top + \Gd$
+for $\Bm \in \bbr^{p\times q}$, $\Vm = \mathrm{diag}(\gs_1^2, \ldots, \gs_q^2)$ and $\Gd= \diag(\gd_1^2,\ldots,\gd_p^2)$.  The quadratic program
+\begin{align}
+\begin{aligned}
+ \hspace{0.5in}\max_{x \in \bbR^p} \ptt
+  &\ip{x}{\bQ x} \\
+ \text{subject to: }
+	 &\textstyle\sum\nolimits_i \hpt x_i =1  \\
+	 & x_i \geq 0
+\label{con}
+\end{aligned}
+\end{align}
+has a unique solution given by
+\begin{align}
+x_i&=\frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}_+ \paren{ \sum_{k:i_k>0} \frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}}^{-1}
+\end{align}
+where $\theta$ is found as the solution to the following fixed-point problem:
+\begin{align}
+\mat{A}_\vartheta \vartheta = \mat{b}_\vartheta
+\end{align}
+as specified in \req{linsys}
+\end{theorem}
+\begin{proof}
+Our Lagrangian for this problem is
+\begin{align}
+\lscr(x,\gl,\ell_1, \ldots, \ell_p) = x^\T \paren{\mat{BVB^\T} +\Gd}x + 2 \gl\paren{1-\be^\T x} +\sum_{i=1}^p x_i \ell_i 
+\end{align}
+Taking the Gradient with respect to $x$ gives us:
+\begin{align}
+\grad_x \lscr = 2\paren{\mat{BVB^\T}}x + 2 \mat{\Gd}x - 2 \gl \be + \ell = 0
+\end{align}
+where $\ell \in \bbr^p$.  Note that our complementary slackness condition states that $\ell_i x_i =0$ for all $i$.  Therefore, when $x_i \neq 0$, $\ell_i=0$.  Let 
+\begin{align*}
+\chi_{\{x = 0\}} = [\inds{\{x_1 = 0\}}, \ldots , \inds{\{x_p = 0\}}]^\T
+\end{align*}
+Our first order conditions are therefore:
+\begin{align}
+\label{kkt1} \tag{kkt1}&\begin{aligned}
+ 2\paren{\mat{BVB^\T}}x +  2\mat{\Gd}x - 2 \gl \be + \ell \chi_{\{x = 0\}}=0
+ \end{aligned}\\
+\label{kkt2} \tag{kkt2}&1 - \be^\T x = 0
+\end{align}
+Let $\be_i$ be the vector of all zero's except in the $i$\textsuperscript{th} location.  Note our first order condition implies that if $x_i = 0$, we have the following:
+\begin{align}
+\mat{BVB^\T}\textbf{diag}(\be_i)x +  \Gd \textbf{diag}(\be_i)x - 2\gl + \ell_i = -2\gl + \ell_i =0
+\end{align} 
+and we therefore have that, in this case, $\ell_i = 2 \gl$.\\  For simplicity, we introduce the following notation:
+\begin{align*}
+\mat{B} &= [ \gb^1, \, \gb^2, \ldots, \gb^q]\\ 
+\text{for } u \in \bbr^p, \; G_k(\mat{u}) &=  {\gb^k}^\T u = \sum_{i=1}^p \gb^k_i u_i
+\end{align*}
+Combining all these together, define
+\begin{align}
+G(u) = \mat{B^\T u} = G(\mat{u})
+\end{align}
+Therefore
+\begin{align}
+\mat{BVB^\T}x &= \mat{B}\paren{\mat{VB^\T}x} = \mat{BV}G(\mat{x})\\
+&=\mat{B} \begin{pmatrix}
+\gs_1^2 G_1(x) \\
+\gs_2^2 G_2(x)\\
+\vdots\\
+\gs_q^2 G_q(x)
+\end{pmatrix}\\
+&= \begin{pmatrix}
+\sum_{k=1}^q \gb^k_1 \gs_k^2 G_k(x) \\
+\sum_{k=1}^q \gb^k_2 \gs_k^2 G_k(x) \\
+\vdots\\
+\sum_{k=1}^q \gb^k_p \gs_k^2 G_k(x) 
+\end{pmatrix}\\
+\end{align}
+Therefore the $i$\textsuperscript{th} row of \req{kkt1}, assuming $x_i \neq 0$ is:
+\begin{align}
+0&=\sum_{k=1}^q \gs^2_k G_k(x) \gb^k_i + \gd_i^2 x_i - \gl 
+\end{align}
+Let $w \in \bbr^p$ such that each element $w_i \geq 0$.  If for each element $w_i \neq 0$, solves the modified first order kkt condition:
+\begin{align}\label{kktw}
+\tag{kktw} \sum_{k=1}^q \gs_k^2 G_k(w) \gb_i^k +\gd_i^2 w_i - \gl_w = 0
+\end{align}
+where $\gl_w = \gl\sum_{i=1}^p w_i$
+then the vector $x$ with elements
+\begin{align}
+x_i = \frac{w_i}{\sum_{j=1}^p w_j}
+\end{align}
+solves \req{kkt1} and \req{kkt2}.  Solving for $w_i$ gives us:
+\begin{align}
+w_i = \frac{1}{\gd_i^2}\paren{\gl_w - \sum_{k=1}^q \gs_k^2 G_k(w) \gb_i^k}_+
+\end{align}
+Defining
+\begin{align} \label{thetadef}
+\theta_k = \frac{\gs_k^2 G_k(w)}{\gl_w}
+\end{align}
+we can rewrite
+\begin{align}
+w_i = \frac{\gl_w}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}_+
+\end{align}
+where the positivity constraint comes from the fact that if $\gl(w)> \sum_{k=1}^q \theta_k \gb_i^k$, then according to \req{kktw}, $w_i<0$, which is not allowed, and so $w_i=0$ is the only solution that satisfies the original KKT conditions.  We therefore find that
+\begin{align}
+x_i &= \frac{\gl_w}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k\gb_i^k}_+ \paren{ \gl_w\sum_{i=1}^p\frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}_+}^{-1}\\
+&=\frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}_+ \paren{ \sum_{i:w_i>0} \frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}}^{-1}\\
+(x_i >0 \iff w_i>0) &=\frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}_+ \paren{ \sum_{i:x_i>0} \frac{1}{\gd_i^2}\paren{1 - \sum_{k=1}^q \theta_k \gb_i^k}}^{-1}
+\end{align}
+Note that the lagrange multiplier $\gl$ (and $\gl_w$) drops out entirely from the calculation, so it suffices to simply solve the following equation:
+\begin{align}
+w_i^* = \frac{\left(1-\sum_{k=1}^q\theta_k \gb_i^k\right)_+}{\gd_i^2}
+\end{align}
+such that 
+\begin{align}
+x_i = \frac{w_i^*}{\sum_{j=1}^p w_j}
+\end{align}
+ Uniqueness follows from the sufficiency and necessity of the KKT conditions.  $\theta$ must be computed in order to solve this problem.  Note that $\theta$ is the vector of elements defined by \req{thetadef}.  
+ Define
+ \begin{align}
+ f_i(\theta) = \sum_{k=1}^q \theta_k \gb_i^k,
+ \end{align}
+ i.e. the sum of the $i$\textsuperscript{th} elements multiplied by $\theta_k$ across all factors, or the $i$\textsuperscript{th} row of $B$ times $\theta$.
+ We have
+ \begin{align}
+ \theta_k &= \frac{\gs_k^2 G_k(w)}{\gl_w}  = \frac{\gs_k^2 {\gb^k}^\T w}{\gl_w}\label{thetadef}\\
+ & = \frac{\gs_k^2}{\gl_w} \sum_{i=1}^p \gb_i^k \frac{\gl_w}{\gd_i^2} \paren{1 - \sum_{m=1}^q \theta_m \gb_i^m}\\
+ &= \gs_k^2 \sum_{i=1}^p \frac{\paren{\gb_i^k -\gb_i^k\sum_{m=1}^q \theta_m(\gb_i^m)}\inds{\{ f_i(\theta)<1 \}}}{\gd_i^2}\\
+ &= \gs_k^2 \sum_{i=1}^p \frac{\gb_i^k}{\gd_i^2}\inds{\{ f_i(\theta)<1 \}} -\gs_k^2 \sum_{i=1}^p \gb_i^k\sum_{m=1}^q\frac{\theta_m \gb_i^m}{\gd_i^2}\inds{\{ f_i(\theta)<1 \}} \\
+ &= \psi_k(\theta)
+ \end{align}
+Note that for each $k=1,2,\ldots,q$, $psi_k(\theta)$ defines the fixed-point mapping:
+\begin{align*}
+\psi_k &: \bbr^q \to \bbr \quad \text{such that}\\
+\theta_k &= \psi_k(\theta) = \psi_k(\theta_1, \theta_2,\ldots,\theta_k,\ldots,\theta_q)
+\end{align*}
+Solving for this fixed-point is equivalent to solving the KKT conditions; any solution to this fixed point will be a solution to the KKT system and any solution to the KKT system will solve this fixed point.  Therefore, the sufficiency of the KKT conditions for a unique minimizer, given the convexity of our constraints, guarantees that a fixed-point is the minimizer of this system.
+ This minimizer can be computed approximately with a fixed-point iteration algorithm.  We define the following vectorized fixed-point equation:
+ \begin{align}
+\theta = \Psi(\theta) = [ \psi_1(\theta), \ldots, \psi_q(\theta)]^\T
+ \end{align}
+ and we wish to solve for $\theta$.
+ In Matrix notation, we find that \req{thetadef} vectorized for $k=1,\ldots,q$ can be written as:
+ \begin{align}
+ \theta &= \frac{1}{\gl_w}\bV G(w) = \frac{1}{\gl_w} \mat{VB}^\T w\\
+ &= \bV \paren{\mat{B}^\T \Gd^{-1}}\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}} - \bV \mat{B}^\T \Gd^{-1} \diag\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}}\mat{B} \theta
+ \end{align}
+ Multiplying  both sides by $\bV^{-1}$ ($\bV$ is full-rank, square, and diagonal) gives us:
+ \begin{align}
+\bV^{-1} \theta &=  \paren{\mat{B}^\T \Gd^{-1}}\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}} -  \mat{B}^\T \Gd^{-1} \diag\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}}\mat{B} \theta
+\end{align} which, when we move the elements around, gives us:
+\begin{align}
+\paren{\bV^{-1} +\mat{B}^\T \Gd^{-1} \diag\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}}\mat{B}} \theta &= \paren{\mat{B}^\T \Gd^{-1}}\paren{\mat{\chi}_{\{\be-\mat{B} \theta>0\}}}
+ \end{align}
+Define:
+\begin{align} \label{linsys}
+\mat{c_\vartheta} = \Gd^{-1} \mat{\chi}_{\{\be-\mat{B} \vartheta>0\}}, \quad \mat{b_\vartheta} =\mat{B}^\T \mat{c_\vartheta}, \quad \mat{A_\vartheta} = \mat{V}^{-1} + \mat{B^\T \textbf{diag}(c_\vartheta) B}
+\end{align}
+Note that $\theta=[\theta_1, \ldots, \theta_q]$ solves:
+\begin{align}
+\mat{A}_\theta \theta = \mat{b}_\theta
+\end{align}
+We can solve for $\theta$ via the following fixed-point iteration algorithm:
+\newcommand{\told}{\theta_{\text{old}}}
+\newcommand{\tnew}{\theta_{\text{new}}}
+\begin{algorithm}[hpt!]
+\vspace{0.16in}
+\begin{enumerate}[label=\textbf{\arabic*.},
+  itemindent=0.32in, itemsep=0.032in]
+\item Initialize $\told \leftarrow (0, \dots, 0) \in \bbR^q$ 
+and tolerance $\epsilon > 0$.
+\item Assemble $\mat{A}_{\told}$ and $b_{\told}$ 
+from 
+$(\bB, \bV, \bdel)$ and $\told$ as in $\req{linsys}$. \label{loop}
+\item Compute $\tnew$ by solving 
+$\mat{A}_{\told} \tnew = b_{\told}$. 
+\item If $| \tnew - \told | >\epsilon$, 
+update $\told \leftarrow \tnew$ and go to Step \ref{loop}
+\item Compute $w=\bdel^{-1}(\rme-\mat{B} \tnew)_+$
+and {\bf return} $\frac{w}{\be^\top w}$.
+\end{enumerate}
+\caption{(FFP). Given $(\mat{B}$, $\mat{V}$, $\bdel)$, computes
+the optimizer of problem \req{con}. }
+\label{alg}
+\end{algorithm}
+We refer to Algorithm \ref{alg} as the \emph{factor fixed point}
+(FFP) method. 
+\end{proof}
+\newpage
+\begin{example}
+We spell out an explicit example with $q=2$ to show a more straightforward calculation.
+Let 
+\begin{align}
+\bB &= [ \gb_1, \, \gb_2], \; \bV = \diag(\gs_1^2, \gs_2^2)\; \bdel =\diag(\gd_1^2 ,\ldots,\gd_p^2) \\
+\bQ &= \bB \bV \bB^\T + \bdel
+\end{align}
+For a vector $u \in \bbr^p$, let $G_1(u) = \gb_1^\T u$ and the same for $G_2(u)$.  We therefore have our un-normalized solution for element $k$, $w_k$, with lagrange multiplier $\gl_w$:
+\begin{align}
+w_i &= \frac{1}{\gd_i^2}\paren{ \gl_w - \gs_1^2 G_1(w) \gb_i^1 - \gs_2^2 G_2(w) \gb_i^2}_+ \\
+&= \frac{\gl_w}{\gd_i^2}\paren{1 -  \theta_1 \gb_i^1 - \theta_2 \gb_i^2}_+\\
+w_i^* &= \frac{1}{\gd_i^2}\paren{1 -  \theta_1 \gb_i^1 - \theta_2 \gb_i^2}_+
+\end{align}
+In order to solve for $\theta$ we construct the following equations.  Let 
+\begin{align*}
+a_{1}(\theta) &= \frac{1}{\gs_1^2} + \sum_{i=1}^p \frac{\paren{\gb_i^1}^2}{\gd_i^2}\inds{\{\theta_1 \gb_i^1 + \theta_2 \gb_i^2<1\}} &\\
+b_1(\theta) & = \sum_{i=1}^p \frac{\gb_i^1}{\gd_i^2}\inds{\{\theta_1 \gb_i^1 + \theta_2 \gb_i^2<1\}} \quad & c_{12}(\theta) = c_{21}(\theta) = \sum_{i=1}^p \frac{\gb_i^1 \gb_i^2}{\gd_i^2}\inds{\{\theta_1 \gb_i^1 + \theta_2 \gb_i^2<1\}}
+\end{align*}
+with $a_2(\theta)$ and $b_2(\theta)$ defined similarly.  We therefore have solve for $\theta$ by solving the following system:
+\begin{align}\underbrace{\begin{pmatrix}
+a_1(\theta) & c_{12}(\theta) \\
+c_{21}(\theta) & a_2(\theta) 
+\end{pmatrix}}_{\mat{A}_\theta}
+\begin{pmatrix}
+\theta_1 \\ \theta_2
+\end{pmatrix}
+= \underbrace{\begin{pmatrix}
+b_1(\theta) \\ b_2(\theta)
+\end{pmatrix}}_{\mat{b}_\theta}
+\end{align}
+Therefore, our fixed point equation is
+\begin{align}
+\Psi(\theta) = \mat{A}_\theta^{-1} \mat{b_\theta} = \theta
+\end{align}
+\end{example}
+
+
+\end{document}
+
+
+
+
+
+

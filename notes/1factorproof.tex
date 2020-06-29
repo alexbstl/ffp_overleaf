@@ -1,0 +1,194 @@
+\documentclass[12pt,leqno,letterpaper]{article}
+
+\input{config}
+\input{header}
+\input{format}
+\input{macros}
+\input{colors}
+
+
+
+%\newcommand{\ind}[1]{{1}_{\{#1\}}}
+\begin{document}
+
+%\renewcommand{\labelenumi}{(\arabic{enumi})}
+% Enable bold sum and product symbols
+\ifxetex
+  \let\lsum\sum
+  \renewcommand{\sum}{\bm{\lsum}} 
+
+  \let\lprod\prod
+  \renewcommand{\prod}{\bm{\lprod}}
+\else
+\fi
+
+
+\title{\vspace{-0.16in}{\bf \Large  
+Efficient Portfolio}}
+
+\date{\vspace{-0.32in}\today}
+
+\newcommand{\thr}{\theta}
+\newcommand{\gfn}{G}
+\newcommand{\bB}{\mat{B}}
+\newcommand{\bQ}{\mat{Q}}
+\newcommand{\bV}{\mat{V}}
+\newcommand{\diag}{\textbf{diag}}
+
+\newcommand{\rme}{\mathrm{e}}
+\newcommand{\rma}{\mathrm{a}}
+\newcommand{\indm}{\ensuremath{\mathbf{1}_0}}
+\newcommand{\ef}{f}
+\newcommand{\vt}{\vartheta}
+\newcommand{\lscr}{\mathscr{L}}
+
+%\newcommand{\gd}{\delta}
+%\newcommand{\gs}{\sigma}
+%\newcommand{\gt}{\theta}
+%\newcommand{\gb}{\beta}
+%\newcommand{\ncal}{\mathcal{N}}
+%\newcommand{\Gth}{\theta}
+
+%\newcommand{\alex}[1]{\textcolor{red}{#1}}
+%\newcommand{\ucal}{\mathcal{U}}
+\newcommand{\tv}{\vartheta}
+\newcommand{\zv}{z}
+
+
+\maketitle
+
+\vspace{-0.16in}
+\begin{theorem}
+
+Fix $\bQ = \sigma^2 \gb \gb^\top + \delta^2 \mat{I}$
+for $\beta \in \bbr^p$, and $\sigma,\delta > 0$.  The quadratic program
+\begin{align}
+\begin{aligned}
+ \hspace{0.5in}\max_{x \in \bbR^p} \ptt
+  &\frac{1}{2} \pt \ip{x}{\bQ x} \\
+ \text{subject to: }
+	 &\textstyle\sum\nolimits_k \hpt x_k =1  \\
+	 & x_k \geq 0
+\label{con}
+\end{aligned}
+\end{align}
+has a unique solution given by
+\begin{align}
+x_i = \frac{\paren{\eta-\gb_i}_+}{\sum_{i: \gb_i < \eta} \paren{\eta-\gb_i}} = \frac{\paren{\eta-\gb_i}_+}{\sum_{i=1}^p \paren{\eta-\gb_i}_+}
+\end{align}
+where $\eta$ is found as the solution to the following fixed-point problem:
+\begin{align}
+\eta = \frac{1/\gs^2+ \sum_{i:\eta>\gb_i  } \gb_i^2/\gd^2}{\sum_{i:\eta>\gb_i} \gb_i/\gd^2}
+\end{align}
+\end{theorem}
+\begin{proof}
+First, note that Problem \req{con} is equivalent to the following optimization problem:
+\begin{align*}
+\begin{aligned}
+ \hspace{0.5in}\max_{v \in \bbR^p} \ptt
+  &\frac{1}{2} \pt \ip{v^2}{\bQ v^2} \\
+ \text{subject to: }
+	&|v| = \ip{v}{v}= 1
+\label{con2}
+\end{aligned}
+\end{align*}
+where $v^2$ is considered to be elementwise square of the vector $v$, i.e. for $v \in \bbr^p$, $v^2 = \diag(v)v$.  This transformation implicitly includes the positivity constraint into the problem's formulation.  We can then form the Lagrangian with respect to $v$ and a lagrange multiplier, $\gl$:
+\begin{align}
+\lscr(v, \gl) = \gs^2 \paren{\sum_{i=1}^p \paren{v_i^2 \gb_i}}^2 + \gd^2 \sum_{i=1}^p v_i^4 + 2\gl\paren{\sum_{i=1}^p v_i^2 -1 }
+\end{align}
+Applying the KKT Criterion, we note that both our objective and constraints are convex, and therefore admit a unique solution.  Taking the derivative of $\lscr$ with respect to an arbitrary $v_i$ gives us:
+\begin{align}
+\diff  v_i \lscr(v,\gl) = 4\gs^2 \paren{\sum_{i=1}^p \paren{v_i^2\gb_i}}v_i\gb_i + 4 \gd^2 v_i^3 + 4 \gl v_i
+\end{align}
+For notational simplicity, define $$G(v) =\gb^\T v^2= \sum_{i=1}^p v_i^2 \gb_i$$
+Our first order condition is therefore that, for every $i \in \{ 1, \ldots,p\}$:
+\begin{align}\label{foc}
+\gs^2 G(v) \gb_iv_i+  \gd^2  v_i^3 +  \gl v_i=0
+\end{align}
+Note that if $v_i^2>0 (\iff v_i \neq 0)$, we have:
+\begin{align}
+\gs^2 G(v) \gb_i + \gd^2 v_i^2 + \gl = 0
+\end{align}
+Furthermore, the conditions \req{foc} is trivially satisfied if $v_i=v_i^2=0$.  We therefore only consider the $v_i^2>0$, and for those elements, the following equations must be satisfied:
+\begin{align}
+\label{kkt1}\tag{KKT1} &\gs^2 G(v) \gb_i +\gd^2 v_i^2 + \gl=0\\
+\label{kkt2} \tag{KKT2}&\sum_{i=1}^p v_i^2 =1
+\end{align}
+(\textit{Note that summing over all the elements of $v^2$ is equivalent to summing over only the nonzero elements.})\\
+Let $w$ be another arbitrary $p-$vector.  If every $w_i^2>0$ satisfies
+\begin{align}
+\label{kktw}\tag{KKTw}  \gs^2 G(w) \gb_i + \gd^2 w_i^2  + \gl_w =0
+\end{align}
+where $ \gl_w = \gl \sum_{i=1}^p w_i^2$, then we have that 
+\req{kkt1} and \req{kkt2} are satisfied by any $v_i^2$ defined as:
+\begin{align}
+v_i^2  = \frac{w_i^2}{\sum_{i=1}^p w_i^2}
+\end{align}
+This allows us just so solve \textit{only} \req{kktw}, and then normalize the solution.\\
+Define:
+\begin{align*}
+\theta = \frac{\gs^2 G(w)}{\gl_w}
+\end{align*}
+Solving \req{kktw} for $w_i^2$ gives us:
+\begin{align}\label{solw}
+w_i^2 &= \frac{\gl_w}{\gd^2}\paren{1-\theta \gb_i}
+\end{align}
+Note that $w_i^2$ is either positive or $0$, so 
+\begin{align}
+G(w) = \sum_{i=1}^p w_i^2 \gb_i = \sum_{i:w_i^2>0} w_i^2 \gb_i
+\end{align}
+Therefore, multiplying each $w_i^2$ by $\gb_i$ and summing gives us:
+\begin{align}
+G(w) = \frac{\gl_w}{\gd^2}\paren{ \sum_{i:w_i^2>0} \gb_i - \theta \sum_{i:w_i^2>0} \gb_i^2}
+\end{align}
+and therefore
+\begin{align}
+\begin{aligned}
+\theta &= \frac{\gs^2}{\gd^2}\paren{ \sum_{i:w_i^2>0} \gb_i - \theta \sum_{i:w_i^2>0} \gb_i^2}\\
+&=\frac{\sum_{i:w_i^2>0} \gb_i/\gd^2}{1/\gs^2 + \sum_{i:w_i^2>0} \gb_i^2/\gd^2}\label{soltheta}
+\end{aligned}
+\end{align}
+Also, note that from \req{kktw} that because $\gl_w>0$ (From KKT conditions and $\sum_{i=1}^p w_i^2>0$) and $\gd^2>0$, 
+$$w_i^2>0 \iff 1-\theta \gb_i>0.$$
+We therefore find the condition that 
+\begin{align}
+\theta \beta_i < 1.
+\end{align}
+Again, for simplicity, define $\eta= 1/\theta$
+Therefore, the summand condition that $w_i^2>0$ is equivalent $\eta > \gb_i$.  Therefore \req{soltheta}, rewritten in terms of $\eta$, becomes:
+\begin{align}
+\eta &=\frac{\gl_w}{\gs^2G(w)}\\
+&= \frac{1/\gs^2 + \sum_{i:\eta>\gb_i} \gb_i^2 / \gd^2}{\sum_{i:\eta>\gb_i}\gb_i / \gd^2} \label{etasol}
+\end{align}
+This is now an explicit fixed-point equation over the summed terms; we can therefore find the solution by simply ordering the elements $\gb_i$ and including them until we find the first $\gb_i$  such that the righthand side of the expression is greater than the lefthand side.
+
+Note that because $w_i^2 \geq 0$, we have
+\begin{align*}
+w_i^2 = \frac{\gs^2 G(w)}{\gd^2}\paren{\eta - \gb_i}_+
+\end{align*}
+We solve for $\eta$ in the fixed point equation, so we know what elements $w_i^2$ are 0.  Further, we note that
+\begin{align}
+\sum_{i:w_i^2>0} w_i^2 = \gs^2G(w)\sum_{i:\gb_i<\eta} \frac{\paren{\eta-\gb_i}}{\gd^2}
+\end{align}
+And therefore
+\begin{align}
+v_i^2 &= \frac{w_i}{\sum_{i:w_i^2>0}w_i^2} \\
+&= \paren{\frac{\gs^2 G(w)}{\gd^2}\paren{\eta-\gb_i}_+} \frac{1}{\gs^2G(w)\sum_{i:\gb_i<\eta} \frac{\paren{\eta-\gb_i}}{\gd^2}}\\
+&= \frac{\paren{\eta-\gb_i}_+}{\sum_{i:\gb_i<\eta}\paren{\eta-\gb_i}}
+\end{align}
+with $\eta$ as found as in \req{etasol}.
+We therefore have
+\begin{align}
+v_i^2  = x_i &= \frac{\paren{\eta-\gb_i}_+}{\sum_{i: \gb_i<\eta} \paren{\eta-\gb_i}}\\
+&= \frac{\paren{\eta-\gb_i}_+}{\sum_{i=1}^p \paren{\eta-\gb_i}_+}
+\end{align}
+
+\end{proof}
+
+\end{document}
+
+
+
+
+
+
